@@ -23,14 +23,17 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.handler.codec.http.HttpContentCompressor;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *
  * @author chengfan
  * @version $Id: HttpSupportInitializer.java, v 0.1 2018年04月09日 下午10:25 chengfan Exp $
  */
+@Slf4j
 public class HttpSupportInitializer extends ChannelInitializer<Channel> {
     protected void initChannel(Channel channel) throws Exception {
+        log.info("init pipeline");
         channel.pipeline()
                 .addLast("codec", new HttpServerCodec())
                 .addLast("aggregator", new HttpObjectAggregator(512 * 1024))
@@ -39,5 +42,8 @@ public class HttpSupportInitializer extends ChannelInitializer<Channel> {
                 .addLast("security", new SecurityHandler())
                 .addLast("route", new RouteHandler())
                 ;
+        //for (String s : channel.pipeline().names()) {
+        //    log.info("add pipeline: {}", s);
+        //}
     }
 }

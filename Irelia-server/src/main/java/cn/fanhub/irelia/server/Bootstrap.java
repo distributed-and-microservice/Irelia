@@ -20,6 +20,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
 
@@ -28,12 +29,14 @@ import java.net.InetSocketAddress;
  * @author chengfan
  * @version $Id: Bootstrap.java, v 0.1 2018年04月07日 下午4:05 chengfan Exp $
  */
+@Slf4j
 public class Bootstrap {
 
     @Setter
     private int port;
 
     public void start() throws InterruptedException {
+        log.info("start netty server");
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             io.netty.bootstrap.ServerBootstrap bootstrap = new io.netty.bootstrap.ServerBootstrap();
@@ -45,8 +48,9 @@ public class Bootstrap {
             future.channel().closeFuture().sync();
 
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.error("start netty server error :", e);
         } finally {
+            log.info("shutdown netty server");
             group.shutdownGracefully().sync();
         }
     }

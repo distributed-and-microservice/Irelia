@@ -17,12 +17,14 @@ package cn.fanhub.irelia.server.handler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *
  * @author chengfan
  * @version $Id: SecurityHandler.java, v 0.1 2018年04月09日 下午10:48 chengfan Exp $
  */
+@Slf4j
 public class SecurityHandler extends ChannelInboundHandlerAdapter {
 
     @Override

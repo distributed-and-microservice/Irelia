@@ -27,14 +27,14 @@ import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.util.CharsetUtil;
-
-import java.net.InetAddress;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *
  * @author chengfan
  * @version $Id: HttpInboundHandler.java, v 0.1 2018年04月10日 下午9:00 chengfan Exp $
  */
+@Slf4j
 public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
     private String result="";
     /*
@@ -43,7 +43,7 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if(! (msg instanceof FullHttpRequest)){
-            result="未知请求!";
+            result = "暂时不支持非 http 请求";
             send(ctx,result,HttpResponseStatus.BAD_REQUEST);
             return;
         }
@@ -54,21 +54,15 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
             HttpMethod method=httpRequest.method();//获取请求方法
             //如果不是这个路径，就直接返回错误
             if(!"/irelia".equalsIgnoreCase(path) || !HttpMethod.POST.equals(method)){
-                result = "非法请求!";
+                result = "请求路径错误或者非 POST 请求";
                 send(ctx,result,HttpResponseStatus.BAD_REQUEST);
                 return;
             }
-            System.out.println("接收到:"+method+" 请求");
-            //如果是POST请求
-            System.out.println("body:"+body);
-            result="POST请求";
-            //send(ctx,result,HttpResponseStatus.OK);
-
+            //如果是POST请求 todo
             ctx.fireChannelRead(msg);
 
         } catch(Exception e) {
-            System.out.println("处理请求失败!");
-            e.printStackTrace();
+            log.error("处理请求失败!", e);
         } finally {
             //释放请求
             httpRequest.release();
@@ -101,8 +95,7 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("连接的客户端地址:" + ctx.channel().remoteAddress());
-        ctx.writeAndFlush("客户端"+ InetAddress.getLocalHost().getHostName() + "成功与服务端建立连接！ ");
+        log.info("连接的客户端地址: {}", ctx.channel().remoteAddress());
         super.channelActive(ctx);
     }
 }
