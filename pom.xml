@@ -8,26 +8,23 @@
     <artifactId>Irelia-parent</artifactId>
     <packaging>pom</packaging>
     <version>0.0.1</version>
+    <properties>
+        <project.version>0.0.1</project.version>
+    </properties>
+
     <modules>
         <module>Irelia-server</module>
         <module>Irelia-common-util</module>
         <module>Irelia-pipeline</module>
         <module>Irelia-upstream</module>
         <module>Irelia-test</module>
+        <module>Irelia-spi-core</module>
+        <module>Irelia-spi-dubbo</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>cn.fanhub</groupId>
-                <artifactId>Irelia-common-util</artifactId>
-                <version>0.0.1</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.fanhub</groupId>
-                <artifactId>Irelia-server</artifactId>
-                <version>0.0.1</version>
-            </dependency>
+
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
