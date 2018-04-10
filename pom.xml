@@ -11,7 +11,38 @@
     <modules>
         <module>Irelia-server</module>
         <module>Irelia-common-util</module>
+        <module>Irelia-pipeline</module>
+        <module>Irelia-upstream</module>
+        <module>Irelia-test</module>
     </modules>
 
-
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>cn.fanhub</groupId>
+                <artifactId>Irelia-common-util</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.fanhub</groupId>
+                <artifactId>Irelia-server</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>4.1.16.Final</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.16.18</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

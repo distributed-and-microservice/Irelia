@@ -9,20 +9,16 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>Irelia-server</artifactId>
+    <artifactId>Irelia-test</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>cn.fanhub</groupId>
-            <artifactId>Irelia-common-util</artifactId>
+            <artifactId>Irelia-server</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
         </dependency>
     </dependencies>
 </project>
