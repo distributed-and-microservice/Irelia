@@ -36,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
-    private String result="";
+    private String result = "";
     /*
      * 收到消息时，返回信息
      */
@@ -44,7 +44,7 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if(! (msg instanceof FullHttpRequest)){
             result = "暂时不支持非 http 请求";
-            send(ctx,result,HttpResponseStatus.BAD_REQUEST);
+            send(ctx, result, HttpResponseStatus.BAD_REQUEST);
             return;
         }
         FullHttpRequest httpRequest = (FullHttpRequest)msg;
@@ -55,7 +55,7 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
             //如果不是这个路径，就直接返回错误
             if(!"/irelia".equalsIgnoreCase(path) || !HttpMethod.POST.equals(method)){
                 result = "请求路径错误或者非 POST 请求";
-                send(ctx,result,HttpResponseStatus.BAD_REQUEST);
+                send(ctx, result, HttpResponseStatus.BAD_REQUEST);
                 return;
             }
             //如果是POST请求 todo
