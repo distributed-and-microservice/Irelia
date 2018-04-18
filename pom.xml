@@ -11,17 +11,19 @@
     <properties>
         <project.version>0.0.1</project.version>
         <dubbo.version>2.5.4</dubbo.version>
+        <springframework.version>4.0.6.RELEASE</springframework.version>
+        <joda-time.version>2.3</joda-time.version>
     </properties>
 
     <modules>
         <module>Irelia-server</module>
         <module>Irelia-common-util</module>
-        <module>Irelia-pipeline</module>
         <module>Irelia-upstream</module>
         <module>Irelia-test</module>
         <module>Irelia-spi-core</module>
         <module>Irelia-spi-dubbo</module>
         <module>Irelia-upstream-dubbo</module>
+        <module>Irelia-core</module>
     </modules>
 
     <dependencyManagement>
@@ -56,6 +58,40 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>dubbo</artifactId>
                 <version>${dubbo.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-web</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-beans</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>23.0</version>
+            </dependency>
+
+            <!--  Spring -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${springframework.version}</version>
+            </dependency>
+
+            <!-- Joda-Time -->
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda-time.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

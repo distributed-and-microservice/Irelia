@@ -15,10 +15,11 @@
  */
 package cn.fanhub.irelia.server.handler;
 
+import cn.fanhub.irelia.core.handler.AbstractPreHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
@@ -35,7 +36,8 @@ import lombok.extern.slf4j.Slf4j;
  * @version $Id: HttpInboundHandler.java, v 0.1 2018年04月10日 下午9:00 chengfan Exp $
  */
 @Slf4j
-public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
+@Sharable
+public class HttpInboundHandler extends AbstractPreHandler {
     private String result = "";
     /*
      * 收到消息时，返回信息
@@ -97,5 +99,9 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         log.info("连接的客户端地址: {}", ctx.channel().remoteAddress());
         super.channelActive(ctx);
+    }
+
+    public int order() {
+        return 0;
     }
 }

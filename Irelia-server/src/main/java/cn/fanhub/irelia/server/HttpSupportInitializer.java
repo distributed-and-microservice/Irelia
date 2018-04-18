@@ -15,15 +15,22 @@
  */
 package cn.fanhub.irelia.server;
 
-import cn.fanhub.irelia.server.handler.HttpInboundHandler;
-import cn.fanhub.irelia.server.handler.RouteHandler;
-import cn.fanhub.irelia.server.handler.SecurityHandler;
+import cn.fanhub.irelia.core.Handler;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.handler.codec.http.HttpContentCompressor;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  *
@@ -32,18 +39,41 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class HttpSupportInitializer extends ChannelInitializer<Channel> {
+
+    private ApplicationContext applicationContext;
+
+    private List<Entry<String, Handler>> handlerList;
+
+    public HttpSupportInitializer(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+        init();
+    }
+
+    private void init() {
+        Map<String, Handler> handlers = applicationContext.getBeansOfType(Handler.class);
+        handlerList = new ArrayList<>(handlers.entrySet());
+        Collections.sort(handlerList, new Comparator<Entry<String, Handler>>() {
+            public int compare(Entry<String, Handler> firstEntry, Entry<String, Handler> secondEntry) {
+                return firstEntry.getValue().order() - secondEntry.getValue().order();
+            }
+        });
+    }
+
     protected void initChannel(Channel channel) throws Exception {
         log.info("init pipeline");
-        channel.pipeline()
-                .addLast("codec", new HttpServerCodec())
-                .addLast("aggregator", new HttpObjectAggregator(512 * 1024))
-                .addLast("compressor", new HttpContentCompressor())
-                .addLast("http",new HttpInboundHandler())
-                .addLast("security", new SecurityHandler())
-                .addLast("route", new RouteHandler())
-                ;
-        //for (String s : channel.pipeline().names()) {
-        //    log.info("add pipeline: {}", s);
-        //}
+
+
+        for (Entry<String, Handler> handlerEntry : handlerList) {
+            if (handlerEntry.getKey().contains("http")) {
+                channel.pipeline()
+                        .addLast("codec", new HttpServerCodec())
+                        .addLast("aggregator", new HttpObjectAggregator(512 * 1024))
+                        .addLast("compressor", new HttpContentCompressor())
+                        ;
+            }
+            channel.pipeline()
+                    .addLast(handlerEntry.getKey(), ((ChannelHandler) handlerEntry.getValue()));
+        }
+
     }
 }

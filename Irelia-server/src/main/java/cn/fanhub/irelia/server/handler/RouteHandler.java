@@ -15,11 +15,12 @@
  */
 package cn.fanhub.irelia.server.handler;
 
+import cn.fanhub.irelia.core.handler.AbstractRouterHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
@@ -36,13 +37,13 @@ import lombok.extern.slf4j.Slf4j;
  * @version $Id: RouteHandler.java, v 0.1 2018年04月09日 下午10:41 chengfan Exp $
  */
 @Slf4j
-public class RouteHandler extends ChannelInboundHandlerAdapter {
+@Sharable
+public class RouteHandler extends AbstractRouterHandler {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         FullHttpRequest httpRequest = (FullHttpRequest)msg;
         HttpHeaders headers = httpRequest.headers();
-
         getBody(httpRequest);
         send(ctx, "hhh", HttpResponseStatus.OK);
     }
@@ -67,5 +68,9 @@ public class RouteHandler extends ChannelInboundHandlerAdapter {
     private String getBody(FullHttpRequest request){
         ByteBuf buf = request.content();
         return buf.toString(CharsetUtil.UTF_8);
+    }
+
+    public int order() {
+        return 1000;
     }
 }

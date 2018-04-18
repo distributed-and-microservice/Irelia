@@ -13,29 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.fanhub.irelia.server.handler;
-
-import cn.fanhub.irelia.core.handler.AbstractPreHandler;
-import io.netty.channel.ChannelHandler.Sharable;
-import io.netty.channel.ChannelHandlerContext;
-import lombok.extern.slf4j.Slf4j;
+package cn.fanhub.irelia.core;
 
 /**
  *
  * @author chengfan
- * @version $Id: SecurityHandler.java, v 0.1 2018年04月09日 下午10:48 chengfan Exp $
+ * @version $Id: Handler.java, v 0.1 2018年04月16日 下午10:33 chengfan Exp $
  */
-@Slf4j
-@Sharable
-public class SecurityHandler extends AbstractPreHandler {
-
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println("security");
-        ctx.fireChannelRead(msg);
-    }
-
-    public int order() {
-        return 10;
-    }
+public interface Handler {
+    int order();
 }

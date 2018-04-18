@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.fanhub.irelia.server.pipeline;
+package cn.fanhub.irelia.core.handler;
+
+import cn.fanhub.irelia.core.Handler;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 
 /**
  *
  * @author chengfan
- * @version $Id: IreliaPipeline.java, v 0.1 2018年04月09日 下午10:19 chengfan Exp $
+ * @version $Id: AbstractRouterHandler.java, v 0.1 2018年04月16日 下午10:37 chengfan Exp $
  */
-public class IreliaPipeline {
-
+public abstract class AbstractRouterHandler extends ChannelInboundHandlerAdapter implements Handler {
 }

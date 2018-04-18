@@ -21,6 +21,9 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 import java.net.InetSocketAddress;
 
@@ -30,10 +33,12 @@ import java.net.InetSocketAddress;
  * @version $Id: Bootstrap.java, v 0.1 2018年04月07日 下午4:05 chengfan Exp $
  */
 @Slf4j
-public class Bootstrap {
+public class Bootstrap implements ApplicationContextAware {
 
     @Setter
     private int port;
+
+    private ApplicationContext applicationContext;
 
     public void start() throws InterruptedException {
         log.info("start netty server");
@@ -43,7 +48,7 @@ public class Bootstrap {
             bootstrap.group(group)
                     .channel(NioServerSocketChannel.class)
                     .localAddress(new InetSocketAddress(port))
-                    .childHandler(new HttpSupportInitializer());
+                    .childHandler(new HttpSupportInitializer(applicationContext));
             ChannelFuture future = bootstrap.bind().sync();
             future.channel().closeFuture().sync();
 
@@ -53,5 +58,9 @@ public class Bootstrap {
             log.info("shutdown netty server");
             group.shutdownGracefully().sync();
         }
+    }
+
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }
