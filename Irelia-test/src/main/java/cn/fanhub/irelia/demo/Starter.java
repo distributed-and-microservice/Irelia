@@ -15,11 +15,11 @@
  */
 package cn.fanhub.irelia.demo;
 
-import cn.fanhub.irelia.demo.config.SpringConfig;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import cn.fanhub.irelia.upstream.IreliaUpstream;
+import cn.fanhub.irelia.upstream.UpstreamManager;
 
 import java.io.IOException;
+import java.util.Map.Entry;
 
 /**
  *
@@ -28,8 +28,14 @@ import java.io.IOException;
  */
 public class Starter {
     public static void main(String[] args) throws IOException {
-        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringConfig.class);
+        //ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringConfig.class);
+        for (Entry<String, IreliaUpstream> entry : UpstreamManager.getUpstreamMap().entrySet()) {
+            System.out.println(entry.getKey()); // 第一次会加载很久 bio 需要升级
+        }
 
+        for (Entry<String, IreliaUpstream> entry : UpstreamManager.getUpstreamMap().entrySet()) {
+            System.out.println(entry.getKey()); // 第二次会加载很快
+        }
         System.in.read(new byte[2]);
     }
 }

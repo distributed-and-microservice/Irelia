@@ -11,5 +11,11 @@
 
     <artifactId>Irelia-upstream</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>cn.fanhub</groupId>
+            <artifactId>Irelia-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

@@ -13,8 +13,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <groupId>cn.fanhub</groupId>
+            <artifactId>Irelia-core</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

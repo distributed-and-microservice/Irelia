@@ -61,8 +61,6 @@ public class HttpSupportInitializer extends ChannelInitializer<Channel> {
 
     protected void initChannel(Channel channel) throws Exception {
         log.info("init pipeline");
-
-
         for (Entry<String, Handler> handlerEntry : handlerList) {
             if (handlerEntry.getKey().contains("http")) {
                 channel.pipeline()

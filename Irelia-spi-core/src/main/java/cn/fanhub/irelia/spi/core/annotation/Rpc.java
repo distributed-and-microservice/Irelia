@@ -23,11 +23,11 @@ import java.lang.annotation.Target;
 /**
  *
  * @author chengfan
- * @version $Id: Api.java, v 0.1 2018年04月10日 下午10:53 chengfan Exp $
+ * @version $Id: Rpc.java, v 0.1 2018年04月10日 下午10:53 chengfan Exp $
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Api {
+public @interface Rpc {
 
     String value();
 

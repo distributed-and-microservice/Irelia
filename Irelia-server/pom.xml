@@ -35,10 +35,6 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-        <dependency>
             <groupId>cn.fanhub</groupId>
             <artifactId>Irelia-core</artifactId>
             <version>${project.version}</version>

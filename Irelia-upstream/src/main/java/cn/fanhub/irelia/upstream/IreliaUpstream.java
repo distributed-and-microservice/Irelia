@@ -13,26 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.fanhub.irelia.spi.core;
+package cn.fanhub.irelia.upstream;
 
-import cn.fanhub.irelia.core.IreliaService;
-import lombok.extern.slf4j.Slf4j;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import cn.fanhub.irelia.core.model.IreliaRequest;
+import cn.fanhub.irelia.core.model.IreliaResponse;
 
 /**
  *
  * @author chengfan
- * @version $Id: ApiServiceManager.java, v 0.1 2018年04月10日 下午10:52 chengfan Exp $
+ * @version $Id: IreliaUpstream.java, v 0.1 2018年04月21日 下午4:22 chengfan Exp $
  */
-@Slf4j
-public class ApiServiceManager {
-    private static final Map<String, IreliaService> SERVICE_MAP = new ConcurrentHashMap<String, IreliaService>();
+public interface IreliaUpstream {
 
-    public static void register(String appId, IreliaService service) {
-        if (log.isInfoEnabled()) {
-            log.info("register upstream ");
-        }
-    }
+    /**
+     * Invoke irelia response.
+     *
+     * @param request the request
+     * @return the irelia response
+     */
+    IreliaResponse invoke(IreliaRequest request);
+
+    /**
+     * Name string.
+     *
+     * @return the string
+     */
+    String name();
 }
