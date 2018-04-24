@@ -26,25 +26,25 @@ import java.util.Map;
 /**
  *
  * @author chengfan
- * @version $Id: DubboServiceManager.java, v 0.1 2018年04月11日 下午9:41 chengfan Exp $
+ * @version $Id: DubboUpstreamManager.java, v 0.1 2018年04月11日 下午9:41 chengfan Exp $
  */
-public class DubboServiceManager {
+public class DubboUpstreamManager {
 
     // todo  缓存待改造
     private final Map<String, IreliaService> serviceMap = Maps.newConcurrentMap();
 
-    public static DubboServiceManager getInstance() {
+    public static DubboUpstreamManager getInstance() {
         return DubboServiceManagerHolder.INSTANCE;
     }
 
-    private DubboServiceManager() {
+    private DubboUpstreamManager() {
 
     }
     private static class DubboServiceManagerHolder {
-        private final static DubboServiceManager INSTANCE = new DubboServiceManager();
+        private final static DubboUpstreamManager INSTANCE = new DubboUpstreamManager();
     }
 
-    private IreliaService createService(DubboServiceConfig config) {
+    private IreliaService createService(DubboUpstreamConfig config) {
         // 当前应用配置
         ApplicationConfig application = new ApplicationConfig();
         application.setName(config.getName());
@@ -62,7 +62,7 @@ public class DubboServiceManager {
         return service;
     }
 
-    public IreliaService getService(DubboServiceConfig config) {
+    public IreliaService getService(DubboUpstreamConfig config) {
         IreliaService service = serviceMap.get(config.getAppId());
         if (service == null) {
             service = createService(config);

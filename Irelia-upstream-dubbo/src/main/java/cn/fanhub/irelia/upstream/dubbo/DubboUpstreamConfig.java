@@ -15,15 +15,16 @@
  */
 package cn.fanhub.irelia.upstream.dubbo;
 
+import cn.fanhub.irelia.core.upstream.UpstreamConfig;
 import lombok.Data;
 
 /**
  *
  * @author chengfan
- * @version $Id: DubboServiceConfig.java, v 0.1 2018年04月11日 下午9:41 chengfan Exp $
+ * @version $Id: DubboUpstreamConfig.java, v 0.1 2018年04月11日 下午9:41 chengfan Exp $
  */
 @Data
-public class DubboServiceConfig {
+public class DubboUpstreamConfig implements UpstreamConfig {
     private String name;
 
     private String address;

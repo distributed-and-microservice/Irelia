@@ -46,8 +46,7 @@ public class DubboUpstream implements IreliaUpstream {
     }
 
     public IreliaResponse invoke(IreliaRequest request) {
-        // todo
-        IreliaService service = DubboServiceManager.getInstance().getService(null);
+        IreliaService service = DubboUpstreamManager.getInstance().getService((DubboUpstreamConfig) request.getUpstreamConfig());
         return service.invoke(request);
     }
 

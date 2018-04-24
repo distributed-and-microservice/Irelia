@@ -13,20 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.fanhub.irelia.core.model;
-
-import cn.fanhub.irelia.core.upstream.UpstreamConfig;
-import lombok.Data;
+package cn.fanhub.irelia.core.upstream;
 
 /**
  *
  * @author chengfan
- * @version $Id: IreliaRequest.java, v 0.1 2018年04月21日 下午4:25 chengfan Exp $
+ * @version $Id: UpstreamConfig.java, v 0.1 2018年04月24日 下午10:05 chengfan Exp $
  */
-@Data
-public class IreliaRequest {
-
-    private String appId;
-
-    private UpstreamConfig upstreamConfig;
+public interface UpstreamConfig {
+    String getAppId();
 }
