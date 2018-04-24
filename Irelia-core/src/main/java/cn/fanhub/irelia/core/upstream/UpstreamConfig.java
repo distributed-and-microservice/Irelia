@@ -21,5 +21,10 @@ package cn.fanhub.irelia.core.upstream;
  * @version $Id: UpstreamConfig.java, v 0.1 2018年04月24日 下午10:05 chengfan Exp $
  */
 public interface UpstreamConfig {
+    /**
+     * Gets app id.
+     *
+     * @return the app id
+     */
     String getAppId();
 }
