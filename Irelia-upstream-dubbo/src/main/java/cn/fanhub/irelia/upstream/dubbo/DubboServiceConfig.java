@@ -32,5 +32,6 @@ public class DubboServiceConfig {
 
     private String password;
 
+    private String appId;
 
 }

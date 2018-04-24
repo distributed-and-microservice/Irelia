@@ -13,17 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.fanhub.irelia.core;
+package cn.fanhub.irelia.spi.core;
 
-import cn.fanhub.irelia.core.model.IreliaRequest;
-import cn.fanhub.irelia.core.model.IreliaResponse;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *
  * @author chengfan
- * @version $Id: IreliaService.java, v 0.1 2018年04月22日 上午11:51 chengfan Exp $
+ * @version $Id: ApiServiceManagerImpl.java, v 0.1 2018年04月10日 下午10:52 chengfan Exp $
  */
-public interface IreliaService {
-
-    IreliaResponse invoke(IreliaRequest request);
+@Slf4j
+public class ApiServiceManagerImpl {
 }

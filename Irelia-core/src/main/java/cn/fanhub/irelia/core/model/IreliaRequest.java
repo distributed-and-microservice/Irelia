@@ -15,10 +15,15 @@
  */
 package cn.fanhub.irelia.core.model;
 
+import lombok.Data;
+
 /**
  *
  * @author chengfan
  * @version $Id: IreliaRequest.java, v 0.1 2018年04月21日 下午4:25 chengfan Exp $
  */
+@Data
 public class IreliaRequest {
+
+    private String appId;
 }

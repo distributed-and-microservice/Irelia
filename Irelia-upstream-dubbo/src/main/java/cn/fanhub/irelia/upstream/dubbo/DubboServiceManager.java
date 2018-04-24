@@ -15,10 +15,13 @@
  */
 package cn.fanhub.irelia.upstream.dubbo;
 
+import cn.fanhub.irelia.core.IreliaService;
 import com.alibaba.dubbo.config.ApplicationConfig;
 import com.alibaba.dubbo.config.ReferenceConfig;
 import com.alibaba.dubbo.config.RegistryConfig;
-import com.alibaba.dubbo.rpc.service.GenericService;
+import com.google.common.collect.Maps;
+
+import java.util.Map;
 
 /**
  *
@@ -27,13 +30,21 @@ import com.alibaba.dubbo.rpc.service.GenericService;
  */
 public class DubboServiceManager {
 
-    private ReferenceConfig<GenericService> reference;
+    // todo  缓存待改造
+    private final Map<String, IreliaService> serviceMap = Maps.newConcurrentMap();
 
-    public DubboServiceManager(DubboServiceConfig config) {
-        connection(config);
+    public static DubboServiceManager getInstance() {
+        return DubboServiceManagerHolder.INSTANCE;
     }
 
-    private void connection(DubboServiceConfig config) {
+    private DubboServiceManager() {
+
+    }
+    private static class DubboServiceManagerHolder {
+        private final static DubboServiceManager INSTANCE = new DubboServiceManager();
+    }
+
+    private IreliaService createService(DubboServiceConfig config) {
         // 当前应用配置
         ApplicationConfig application = new ApplicationConfig();
         application.setName(config.getName());
@@ -43,18 +54,20 @@ public class DubboServiceManager {
         registry.setAddress(config.getAddress());
         registry.setUsername(config.getUsername());
         registry.setPassword(config.getPassword());
-        // todo 缓存该实例
-        reference = new ReferenceConfig<GenericService>();
+        registry.setGroup(config.getAppId());
+        ReferenceConfig<IreliaService> reference = new ReferenceConfig<IreliaService>();
+        IreliaService service = reference.get();
+        // 缓存
+        serviceMap.put(config.getAppId(), service);
+        return service;
     }
 
-    public Object invoke(DubboReqest dubboReqest) {
-        // 弱类型接口名
-        reference.setInterface(dubboReqest.getInterfaceName());
-        reference.setVersion(dubboReqest.getVersion());
-        // 声明为泛化接口
-        reference.setGeneric(true);
-        GenericService genericService = reference.get();
-        return genericService.$invoke(dubboReqest.getMethodName(), dubboReqest.getParamTypes(), dubboReqest.getParams());
+    public IreliaService getService(DubboServiceConfig config) {
+        IreliaService service = serviceMap.get(config.getAppId());
+        if (service == null) {
+            service = createService(config);
+        }
+        return service;
     }
 
 }
