@@ -24,15 +24,20 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  *
  * @author chengfan
- * @version $Id: ApiServiceManager.java, v 0.1 2018年04月10日 下午10:52 chengfan Exp $
+ * @version $Id: IreliaServiceManager.java, v 0.1 2018年04月10日 下午10:52 chengfan Exp $
  */
 @Slf4j
-public class ApiServiceManager {
+public class IreliaServiceManager {
+
     private static final Map<String, IreliaService> SERVICE_MAP = new ConcurrentHashMap<String, IreliaService>();
 
     public static void register(String appId, IreliaService service) {
         if (log.isInfoEnabled()) {
-            log.info("register upstream ");
+            log.info("register ireliaService ");
         }
+        IreliaServiceHolderImpl holder = new IreliaServiceHolderImpl();
+
+        SERVICE_MAP.put(appId, service);
     }
+
 }

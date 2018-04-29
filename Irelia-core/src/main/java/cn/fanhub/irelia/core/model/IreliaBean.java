@@ -13,15 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.fanhub.irelia.spi.core;
+package cn.fanhub.irelia.core.model;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.Builder;
+import lombok.Getter;
 
 /**
  *
  * @author chengfan
- * @version $Id: ApiServiceManagerImpl.java, v 0.1 2018年04月10日 下午10:52 chengfan Exp $
+ * @version $Id: IreliaBean.java, v 0.1 2018年04月26日 下午10:22 chengfan Exp $
  */
-@Slf4j
-public class ApiServiceManagerImpl {
+@Builder
+@Getter
+public class IreliaBean {
+
+    private MethodInfo methodInfo;
+
+    private String rpc;
+
+    private String rpcName;
+
+    private String des;
 }

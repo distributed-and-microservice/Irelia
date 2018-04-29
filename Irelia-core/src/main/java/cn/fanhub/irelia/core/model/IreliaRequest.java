@@ -29,4 +29,8 @@ public class IreliaRequest {
     private String appId;
 
     private UpstreamConfig upstreamConfig;
+
+    private String rpcType;
+
+    private Object[] requestArgs;
 }

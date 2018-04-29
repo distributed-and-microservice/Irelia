@@ -15,15 +15,21 @@
  */
 package cn.fanhub.irelia.core.model;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 
 /**
  *
  * @author chengfan
- * @version $Id: IreliaResponse.java, v 0.1 2018年04月21日 下午4:25 chengfan Exp $
+ * @version $Id: MethodInfo.java, v 0.1 2018年04月26日 下午10:22 chengfan Exp $
  */
-@Data
-public class IreliaResponse {
-    private Object content;
 
+@Builder
+@Getter
+public class MethodInfo {
+    private String[] paramNames;
+    private Class<?>[] paramTypes;
+    private Class<?> returnType;
+    private String methodName;
+    private Class itf;
 }

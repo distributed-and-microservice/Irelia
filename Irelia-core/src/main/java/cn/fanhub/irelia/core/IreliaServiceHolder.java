@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.fanhub.irelia.core.model;
+package cn.fanhub.irelia.core;
 
-import lombok.Data;
+import cn.fanhub.irelia.core.model.IreliaBean;
 
 /**
  *
  * @author chengfan
- * @version $Id: IreliaResponse.java, v 0.1 2018年04月21日 下午4:25 chengfan Exp $
+ * @version $Id: IreliaServiceHolder.java, v 0.1 2018年04月29日 下午11:17 chengfan Exp $
  */
-@Data
-public class IreliaResponse {
-    private Object content;
+public interface IreliaServiceHolder {
+    void loadRpc(Object rpcBean);
 
+    IreliaBean getIreliaBean(String rpcValue);
 }
