@@ -31,13 +31,11 @@ public class IreliaServiceManager {
 
     private static final Map<String, IreliaService> SERVICE_MAP = new ConcurrentHashMap<String, IreliaService>();
 
-    public static void register(String appId, IreliaService service) {
-        if (log.isInfoEnabled()) {
-            log.info("register ireliaService ");
+    public static void register(String appName, IreliaService service) {
+        if (log.isDebugEnabled()) {
+            log.debug("register ireliaService ");
         }
-        IreliaServiceHolderImpl holder = new IreliaServiceHolderImpl();
-
-        SERVICE_MAP.put(appId, service);
+        SERVICE_MAP.put(appName, service);
     }
 
 }
