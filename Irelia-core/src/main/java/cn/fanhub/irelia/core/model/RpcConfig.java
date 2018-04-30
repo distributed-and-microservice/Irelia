@@ -13,15 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.fanhub.irelia.server.http;
+package cn.fanhub.irelia.core.model;
 
 /**
  *
  * @author chengfan
- * @version $Id: HeaderKey.java, v 0.1 2018年04月11日 下午10:10 chengfan Exp $
+ * @version $Id: RpcConfig.java, v 0.1 2018年04月30日 下午10:34 chengfan Exp $
  */
+public interface RpcConfig {
+    String getItfName();
 
-public enum  HeaderKey {
-    rpcValue,
-    version,
+    String getMethodName();
+
+    String getAppName();
+
+    String getRpcValue();
 }

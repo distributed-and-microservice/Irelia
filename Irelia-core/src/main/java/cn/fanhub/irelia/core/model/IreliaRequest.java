@@ -16,6 +16,7 @@
 package cn.fanhub.irelia.core.model;
 
 import cn.fanhub.irelia.core.upstream.UpstreamConfig;
+import com.alibaba.fastjson.JSONArray;
 import lombok.Data;
 
 /**
@@ -26,11 +27,13 @@ import lombok.Data;
 @Data
 public class IreliaRequest {
 
-    private String appId;
+    private String appName;
 
     private UpstreamConfig upstreamConfig;
 
-    private String rpcType;
+    private RpcConfig rpcConfig;
 
-    private Object[] requestArgs;
+    private String rpcValue;
+
+    private JSONArray requestArgs;
 }

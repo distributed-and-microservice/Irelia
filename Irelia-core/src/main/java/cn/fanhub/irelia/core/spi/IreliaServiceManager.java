@@ -37,4 +37,8 @@ public class IreliaServiceManager {
         SERVICE_MAP.put(appName, service);
     }
 
+    public static IreliaService getService(String appName) {
+        return SERVICE_MAP.get(appName);
+    }
+
 }

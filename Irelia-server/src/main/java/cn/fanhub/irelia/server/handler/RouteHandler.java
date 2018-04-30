@@ -16,16 +16,17 @@
 package cn.fanhub.irelia.server.handler;
 
 import cn.fanhub.irelia.core.handler.AbstractRouterHandler;
-import io.netty.buffer.ByteBuf;
+import cn.fanhub.irelia.core.model.IreliaRequest;
+import cn.fanhub.irelia.core.model.IreliaResponse;
+import cn.fanhub.irelia.core.spi.IreliaServiceManager;
+import com.alibaba.fastjson.JSON;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
-import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpHeaderNames;
-import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.util.CharsetUtil;
@@ -42,33 +43,25 @@ public class RouteHandler extends AbstractRouterHandler {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-             FullHttpRequest httpRequest = (FullHttpRequest)msg;
-        HttpHeaders headers = httpRequest.headers();
-        getBody(httpRequest);
-        send(ctx, "hhh", HttpResponseStatus.OK);
+        IreliaRequest ireliaRequest = (IreliaRequest)msg;
+
+        IreliaResponse ireliaResponse = IreliaServiceManager.getService(ireliaRequest.getAppName()).invoke(ireliaRequest);
+
+        send(ctx, ireliaResponse, HttpResponseStatus.OK);
     }
 
     /**
      * 发送的返回值
      * @param ctx     返回
-     * @param context 消息
+     * @param ireliaResponse 消息
      * @param status 状态
      */
-    private void send(ChannelHandlerContext ctx, String context, HttpResponseStatus status) {
-        FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, status, Unpooled.copiedBuffer(context, CharsetUtil.UTF_8));
+    private void send(ChannelHandlerContext ctx, IreliaResponse ireliaResponse, HttpResponseStatus status) {
+        FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, status, Unpooled.copiedBuffer(JSON.toJSONString(ireliaResponse), CharsetUtil.UTF_8));
         response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain; charset=UTF-8");
         ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
     }
 
-    /**
-     * 获取body参数
-     * @param request
-     * @return
-     */
-    private String getBody(FullHttpRequest request){
-        ByteBuf buf = request.content();
-        return buf.toString(CharsetUtil.UTF_8);
-    }
 
     public int order() {
         return 1000;
