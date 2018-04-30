@@ -15,8 +15,8 @@
  */
 package cn.fanhub.irelia.spi.core;
 
-import cn.fanhub.irelia.core.IreliaService;
-import cn.fanhub.irelia.core.IreliaServiceHolder;
+import cn.fanhub.irelia.core.spi.IreliaService;
+import cn.fanhub.irelia.core.spi.IreliaServiceHolder;
 import cn.fanhub.irelia.core.model.IreliaRequest;
 import cn.fanhub.irelia.core.model.IreliaResponse;
 import cn.fanhub.irelia.core.model.MethodInfo;

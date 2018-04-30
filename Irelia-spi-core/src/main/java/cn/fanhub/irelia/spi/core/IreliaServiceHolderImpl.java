@@ -16,7 +16,7 @@
 package cn.fanhub.irelia.spi.core;
 
 import cn.fanhub.irelia.core.model.IreliaBean;
-import cn.fanhub.irelia.core.IreliaServiceHolder;
+import cn.fanhub.irelia.core.spi.IreliaServiceHolder;
 import cn.fanhub.irelia.core.model.MethodInfo;
 import cn.fanhub.irelia.spi.core.annotation.Rpc;
 import com.google.common.collect.Maps;

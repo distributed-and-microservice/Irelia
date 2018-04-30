@@ -15,11 +15,11 @@
  */
 package cn.fanhub.irelia.spi.dubbo;
 
-import cn.fanhub.irelia.core.IreliaService;
-import cn.fanhub.irelia.core.IreliaServiceHolder;
+import cn.fanhub.irelia.core.spi.IreliaService;
+import cn.fanhub.irelia.core.spi.IreliaServiceHolder;
 import cn.fanhub.irelia.spi.core.IreliaServiceHolderImpl;
 import cn.fanhub.irelia.spi.core.IreliaServiceImpl;
-import cn.fanhub.irelia.spi.core.IreliaServiceManager;
+import cn.fanhub.irelia.core.spi.IreliaServiceManager;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;

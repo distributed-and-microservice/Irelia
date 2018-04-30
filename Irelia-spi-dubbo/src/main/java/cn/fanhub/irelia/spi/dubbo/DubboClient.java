@@ -15,7 +15,7 @@
  */
 package cn.fanhub.irelia.spi.dubbo;
 
-import cn.fanhub.irelia.core.IreliaService;
+import cn.fanhub.irelia.core.spi.IreliaService;
 import com.alibaba.dubbo.config.ApplicationConfig;
 import com.alibaba.dubbo.config.ProtocolConfig;
 import com.alibaba.dubbo.config.RegistryConfig;

@@ -15,7 +15,7 @@
  */
 package cn.fanhub.irelia.upstream.dubbo;
 
-import cn.fanhub.irelia.core.IreliaService;
+import cn.fanhub.irelia.core.spi.IreliaService;
 import cn.fanhub.irelia.core.model.IreliaRequest;
 import cn.fanhub.irelia.core.model.IreliaResponse;
 import cn.fanhub.irelia.upstream.IreliaUpstream;

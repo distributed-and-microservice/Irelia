@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.fanhub.irelia.spi.core;
+package cn.fanhub.irelia.core.spi;
 
-import cn.fanhub.irelia.core.IreliaService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;

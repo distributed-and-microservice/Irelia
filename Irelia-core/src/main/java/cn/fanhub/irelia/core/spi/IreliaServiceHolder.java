@@ -13,21 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.fanhub.irelia.core;
+package cn.fanhub.irelia.core.spi;
 
-import cn.fanhub.irelia.core.model.IreliaRequest;
-import cn.fanhub.irelia.core.model.IreliaResponse;
-
-import java.lang.reflect.InvocationTargetException;
+import cn.fanhub.irelia.core.model.IreliaBean;
 
 /**
  *
  * @author chengfan
- * @version $Id: IreliaService.java, v 0.1 2018年04月22日 上午11:51 chengfan Exp $
+ * @version $Id: IreliaServiceHolder.java, v 0.1 2018年04月29日 下午11:17 chengfan Exp $
  */
-public interface IreliaService {
+public interface IreliaServiceHolder {
+    void loadRpc(Object rpcBean);
 
-    IreliaResponse invoke(IreliaRequest request) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException;
-
-    void setIreliaServiceHolder(IreliaServiceHolder serviceHolder);
+    IreliaBean getIreliaBean(String rpcValue);
 }
