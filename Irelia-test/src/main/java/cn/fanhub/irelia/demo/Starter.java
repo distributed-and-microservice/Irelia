@@ -38,6 +38,6 @@ public class Starter {
         //}
         //System.in.read(new byte[2]);
 
-        System.out.println(applicationContext.getBean(TestService.class));
+        //System.out.println(applicationContext.getBean(TestService.class));
     }
 }

@@ -37,7 +37,7 @@ public class IreliaServiceImpl implements IreliaService {
     public IreliaResponse invoke(IreliaRequest request) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         IreliaResponse response = new IreliaResponse();
 
-        MethodInfo methodInfo = serviceHolder.getIreliaBean(request.getRpcType()).getMethodInfo();
+        MethodInfo methodInfo = serviceHolder.getIreliaBean(request.getRpcValue()).getMethodInfo();
         Object o = MethodUtils.invokeExactMethod(methodInfo.getItf(), methodInfo.getMethodName(), request.getRequestArgs(),
                 methodInfo.getParamTypes());
 

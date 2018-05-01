@@ -22,6 +22,8 @@ import cn.fanhub.irelia.upstream.IreliaUpstream;
 import cn.fanhub.irelia.upstream.UpstreamManager;
 import lombok.extern.slf4j.Slf4j;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  *
  * @author chengfan
@@ -45,7 +47,7 @@ public class DubboUpstream implements IreliaUpstream {
 
     }
 
-    public IreliaResponse invoke(IreliaRequest request) {
+    public IreliaResponse invoke(IreliaRequest request) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         IreliaService service = DubboServiceManager.getInstance().getService((DubboUpstreamConfig) request.getUpstreamConfig());
         return service.invoke(request);
     }

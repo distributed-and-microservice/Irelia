@@ -18,6 +18,8 @@ package cn.fanhub.irelia.upstream;
 import cn.fanhub.irelia.core.model.IreliaRequest;
 import cn.fanhub.irelia.core.model.IreliaResponse;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  *
  * @author chengfan
@@ -31,7 +33,7 @@ public interface IreliaUpstream {
      * @param request the request
      * @return the irelia response
      */
-    IreliaResponse invoke(IreliaRequest request);
+    IreliaResponse invoke(IreliaRequest request) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException;
 
     /**
      * Name string.
