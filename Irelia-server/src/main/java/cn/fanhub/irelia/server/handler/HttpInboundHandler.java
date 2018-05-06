@@ -16,7 +16,6 @@
 package cn.fanhub.irelia.server.handler;
 
 import cn.fanhub.irelia.core.handler.AbstractPreHandler;
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
@@ -52,8 +51,7 @@ public class HttpInboundHandler extends AbstractPreHandler {
         FullHttpRequest httpRequest = (FullHttpRequest)msg;
         try{
             String path=httpRequest.uri();          //获取路径
-            String body = getBody(httpRequest);     //获取参数
-            HttpMethod method=httpRequest.method();//获取请求方法
+            HttpMethod method = httpRequest.method();//获取请求方法
             //如果不是这个路径，就直接返回错误
             if(!"/irelia".equalsIgnoreCase(path) || !HttpMethod.POST.equals(method)){
                 result = "请求路径错误或者非 POST 请求";
@@ -69,15 +67,6 @@ public class HttpInboundHandler extends AbstractPreHandler {
             //释放请求
             httpRequest.release();
         }
-    }
-    /**
-     * 获取body参数
-     * @param request
-     * @return
-     */
-    private String getBody(FullHttpRequest request){
-        ByteBuf buf = request.content();
-        return buf.toString(CharsetUtil.UTF_8);
     }
 
     /**

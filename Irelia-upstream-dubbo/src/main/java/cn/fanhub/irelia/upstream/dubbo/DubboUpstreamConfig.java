@@ -33,6 +33,6 @@ public class DubboUpstreamConfig implements UpstreamConfig {
 
     private String password;
 
-    private String appId;
+    private String appName;
 
 }

@@ -16,13 +16,15 @@
 package cn.fanhub.irelia.spi.core;
 
 import cn.fanhub.irelia.core.model.IreliaBean;
-import cn.fanhub.irelia.core.spi.IreliaServiceHolder;
 import cn.fanhub.irelia.core.model.MethodInfo;
+import cn.fanhub.irelia.core.spi.IreliaServiceHolder;
 import cn.fanhub.irelia.spi.core.annotation.Rpc;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.reflect.MethodUtils;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,10 +36,14 @@ public class IreliaServiceHolderImpl implements IreliaServiceHolder {
 
     private final Map<String, IreliaBean> IreliaBeansMap = Maps.newConcurrentMap();
 
-    public void loadRpc(Object rpcBean) {
-        Method[] methods = MethodUtils.getMethodsWithAnnotation(rpcBean.getClass(), Rpc.class);
 
+    private final Map<String, List<IreliaBean>> sysTemBeansMap = Maps.newConcurrentMap();
+
+    public void loadRpc(String sysName, Object rpcBean) {
+        Method[] methods = MethodUtils.getMethodsWithAnnotation(rpcBean.getClass(), Rpc.class);
+        List<IreliaBean> beanList = Lists.newCopyOnWriteArrayList();
         for (Method method : methods) {
+
             Rpc annotation = method.getAnnotation(Rpc.class);
 
             Class<?>[] parameterTypes = method.getParameterTypes();
@@ -54,19 +60,24 @@ public class IreliaServiceHolderImpl implements IreliaServiceHolder {
 
             IreliaBean ireliaBean = IreliaBean
                     .builder()
-                    .rpc(annotation.value())
+                    .rpcValue(annotation.value())
                     .rpcName(annotation.name())
                     .des(annotation.desc())
                     .methodInfo(methodInfo)
                     .build();
 
             IreliaBeansMap.put(annotation.value(), ireliaBean);
+            beanList.add(ireliaBean);
         }
-
+        sysTemBeansMap.put(sysName, beanList);
     }
 
     public IreliaBean getIreliaBean(String rpcValue) {
         return IreliaBeansMap.get(rpcValue);
+    }
+
+    public List<IreliaBean> getBeansBySysName(String sysName) {
+        return sysTemBeansMap.get(sysName);
     }
 
 }

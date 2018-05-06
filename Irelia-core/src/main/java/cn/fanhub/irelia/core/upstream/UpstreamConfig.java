@@ -26,5 +26,5 @@ public interface UpstreamConfig {
      *
      * @return the app id
      */
-    String getAppId();
+    String getAppName();
 }

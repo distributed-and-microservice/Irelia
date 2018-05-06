@@ -17,13 +17,17 @@ package cn.fanhub.irelia.core.spi;
 
 import cn.fanhub.irelia.core.model.IreliaBean;
 
+import java.util.List;
+
 /**
  *
  * @author chengfan
  * @version $Id: IreliaServiceHolder.java, v 0.1 2018年04月29日 下午11:17 chengfan Exp $
  */
 public interface IreliaServiceHolder {
-    void loadRpc(Object rpcBean);
+    void loadRpc(String sysName, Object rpcBean);
 
     IreliaBean getIreliaBean(String rpcValue);
+
+    List<IreliaBean> getBeansBySysName(String sysName);
 }

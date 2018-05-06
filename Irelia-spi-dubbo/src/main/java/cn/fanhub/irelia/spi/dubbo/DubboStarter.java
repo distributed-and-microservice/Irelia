@@ -19,7 +19,6 @@ import cn.fanhub.irelia.core.spi.IreliaService;
 import cn.fanhub.irelia.core.spi.IreliaServiceHolder;
 import cn.fanhub.irelia.spi.core.IreliaServiceHolderImpl;
 import cn.fanhub.irelia.spi.core.IreliaServiceImpl;
-import cn.fanhub.irelia.core.spi.IreliaServiceManager;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
@@ -53,10 +52,8 @@ public class DubboStarter implements ApplicationContextAware {
         service.setIreliaServiceHolder(holder);
 
         for (String springBeanName : this.applicationContext.getBeanDefinitionNames()) {
-            holder.loadRpc(this.applicationContext.getBean(springBeanName));
+            holder.loadRpc(appName, this.applicationContext.getBean(springBeanName));
         }
-
-        IreliaServiceManager.register(this.appName, service);
     }
 
 }

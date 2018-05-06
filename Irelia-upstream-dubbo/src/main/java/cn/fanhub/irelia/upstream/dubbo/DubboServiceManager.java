@@ -16,12 +16,10 @@
 package cn.fanhub.irelia.upstream.dubbo;
 
 import cn.fanhub.irelia.core.spi.IreliaService;
+import cn.fanhub.irelia.core.spi.IreliaServiceManager;
 import com.alibaba.dubbo.config.ApplicationConfig;
 import com.alibaba.dubbo.config.ReferenceConfig;
 import com.alibaba.dubbo.config.RegistryConfig;
-import com.google.common.collect.Maps;
-
-import java.util.Map;
 
 /**
  *
@@ -29,9 +27,6 @@ import java.util.Map;
  * @version $Id: DubboServiceManager.java, v 0.1 2018年04月11日 下午9:41 chengfan Exp $
  */
 public class DubboServiceManager {
-
-    // todo  缓存待改造
-    private final Map<String, IreliaService> serviceMap = Maps.newConcurrentMap();
 
     public static DubboServiceManager getInstance() {
         return DubboServiceManagerHolder.INSTANCE;
@@ -47,27 +42,32 @@ public class DubboServiceManager {
     private IreliaService createService(DubboUpstreamConfig config) {
         // 当前应用配置
         ApplicationConfig application = new ApplicationConfig();
-        application.setName(config.getName());
+        application.setName(config.getAppName());
 
         // 连接注册中心配置
         RegistryConfig registry = new RegistryConfig();
         registry.setAddress(config.getAddress());
         registry.setUsername(config.getUsername());
         registry.setPassword(config.getPassword());
-        registry.setGroup(config.getAppId());
+        registry.setGroup(config.getAppName());
         ReferenceConfig<IreliaService> reference = new ReferenceConfig<IreliaService>();
         IreliaService service = reference.get();
         // 缓存
-        serviceMap.put(config.getAppId(), service);
+        //serviceMap.put(config.getAppName(), service);
+        IreliaServiceManager.register(config.getAppName(), service);
         return service;
     }
 
     public IreliaService getService(DubboUpstreamConfig config) {
-        IreliaService service = serviceMap.get(config.getAppId());
+        IreliaService service = IreliaServiceManager.getService(config.getAppName());
         if (service == null) {
             service = createService(config);
         }
         return service;
+    }
+
+    public IreliaService register(DubboUpstreamConfig config) {
+        return createService(config);
     }
 
 }

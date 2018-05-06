@@ -48,6 +48,8 @@ public abstract class AbstractConfigHandler extends AbstractPreHandler {
 
         IreliaRequest ireliaRequest = new IreliaRequest();
         ireliaRequest.setRpcValue(rpcValue);
+
+        // todo 参数支持的不够完善
         ireliaRequest.setRequestArgs(JSON.parseArray(body));
         ireliaRequest.setRpcConfig(config);
 
@@ -70,5 +72,5 @@ public abstract class AbstractConfigHandler extends AbstractPreHandler {
         return buf.toString(CharsetUtil.UTF_8);
     }
 
-    abstract RpcConfig getConfig(String rpcValue);
+    abstract public RpcConfig getConfig(String rpcValue);
 }

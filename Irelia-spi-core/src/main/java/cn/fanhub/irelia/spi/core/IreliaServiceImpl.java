@@ -15,11 +15,13 @@
  */
 package cn.fanhub.irelia.spi.core;
 
-import cn.fanhub.irelia.core.spi.IreliaService;
-import cn.fanhub.irelia.core.spi.IreliaServiceHolder;
 import cn.fanhub.irelia.core.model.IreliaRequest;
 import cn.fanhub.irelia.core.model.IreliaResponse;
 import cn.fanhub.irelia.core.model.MethodInfo;
+import cn.fanhub.irelia.core.spi.IreliaService;
+import cn.fanhub.irelia.core.spi.IreliaServiceHolder;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.reflect.MethodUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -31,13 +33,15 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class IreliaServiceImpl implements IreliaService {
 
-    private IreliaServiceHolder serviceHolder;
+    @Getter
+    @Setter
+    private IreliaServiceHolder ireliaServiceHolder;
 
 
     public IreliaResponse invoke(IreliaRequest request) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         IreliaResponse response = new IreliaResponse();
 
-        MethodInfo methodInfo = serviceHolder.getIreliaBean(request.getRpcValue()).getMethodInfo();
+        MethodInfo methodInfo = ireliaServiceHolder.getIreliaBean(request.getRpcValue()).getMethodInfo();
         Object o = MethodUtils.invokeExactMethod(methodInfo.getItf(), methodInfo.getMethodName(), request.getRequestArgs(),
                 methodInfo.getParamTypes());
 
@@ -45,7 +49,4 @@ public class IreliaServiceImpl implements IreliaService {
         return response;
     }
 
-    public void setIreliaServiceHolder(IreliaServiceHolder serviceHolder) {
-        this.serviceHolder = serviceHolder;
-    }
 }

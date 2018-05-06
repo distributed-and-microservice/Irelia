@@ -29,7 +29,7 @@ public class IreliaBean {
 
     private MethodInfo methodInfo;
 
-    private String rpc;
+    private String rpcValue;
 
     private String rpcName;
 

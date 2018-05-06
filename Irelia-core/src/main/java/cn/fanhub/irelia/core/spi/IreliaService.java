@@ -30,4 +30,6 @@ public interface IreliaService {
     IreliaResponse invoke(IreliaRequest request) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException;
 
     void setIreliaServiceHolder(IreliaServiceHolder serviceHolder);
+
+    IreliaServiceHolder getIreliaServiceHolder();
 }
