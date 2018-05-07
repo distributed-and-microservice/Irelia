@@ -18,6 +18,7 @@ package cn.fanhub.irelia.core.spi;
 import cn.fanhub.irelia.core.model.IreliaRequest;
 import cn.fanhub.irelia.core.model.IreliaResponse;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -25,7 +26,7 @@ import java.lang.reflect.InvocationTargetException;
  * @author chengfan
  * @version $Id: IreliaService.java, v 0.1 2018年04月22日 上午11:51 chengfan Exp $
  */
-public interface IreliaService {
+public interface IreliaService extends Serializable {
 
     IreliaResponse invoke(IreliaRequest request) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException;
 

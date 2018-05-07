@@ -31,7 +31,7 @@
         </dependency>
         <dependency>
             <groupId>cn.fanhub</groupId>
-            <artifactId>Irelia-upstream-dubbo</artifactId>
+            <artifactId>Irelia-upstream</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

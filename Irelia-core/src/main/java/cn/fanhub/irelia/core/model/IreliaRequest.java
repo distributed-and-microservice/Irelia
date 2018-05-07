@@ -19,13 +19,15 @@ import cn.fanhub.irelia.core.upstream.UpstreamConfig;
 import com.alibaba.fastjson.JSONArray;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  *
  * @author chengfan
  * @version $Id: IreliaRequest.java, v 0.1 2018年04月21日 下午4:25 chengfan Exp $
  */
 @Data
-public class IreliaRequest {
+public class IreliaRequest implements Serializable {
 
     private String appName;
 

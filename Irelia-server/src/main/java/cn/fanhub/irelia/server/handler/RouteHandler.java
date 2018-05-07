@@ -18,7 +18,7 @@ package cn.fanhub.irelia.server.handler;
 import cn.fanhub.irelia.core.handler.AbstractRouterHandler;
 import cn.fanhub.irelia.core.model.IreliaRequest;
 import cn.fanhub.irelia.core.model.IreliaResponse;
-import cn.fanhub.irelia.core.spi.IreliaServiceManager;
+import cn.fanhub.irelia.upstream.UpstreamManager;
 import com.alibaba.fastjson.JSON;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
@@ -45,7 +45,10 @@ public class RouteHandler extends AbstractRouterHandler {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         IreliaRequest ireliaRequest = (IreliaRequest)msg;
 
-        IreliaResponse ireliaResponse = IreliaServiceManager.getService(ireliaRequest.getAppName()).invoke(ireliaRequest);
+        IreliaResponse ireliaResponse = null;
+
+        ireliaResponse = UpstreamManager.getUpstream(ireliaRequest.getAppName()).invoke(ireliaRequest);
+
 
         send(ctx, ireliaResponse);
     }

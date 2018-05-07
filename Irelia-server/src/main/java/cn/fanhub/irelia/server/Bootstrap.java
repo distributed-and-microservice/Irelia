@@ -43,24 +43,36 @@ public class Bootstrap implements ApplicationContextAware {
 
     public void start() throws InterruptedException {
         log.info("start netty server");
-        EventLoopGroup boosGroup = new NioEventLoopGroup();
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
-        try {
-            ServerBootstrap bootstrap = new ServerBootstrap();
-            bootstrap.group(boosGroup, workerGroup)
-                    .channel(NioServerSocketChannel.class)
-                    .localAddress(new InetSocketAddress(port))
-                    .childHandler(new HttpSupportInitializer(applicationContext));
-            ChannelFuture future = bootstrap.bind().sync();
-            future.channel().closeFuture().sync();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                EventLoopGroup boosGroup = new NioEventLoopGroup();
+                EventLoopGroup workerGroup = new NioEventLoopGroup();
+                try {
+                    ServerBootstrap bootstrap = new ServerBootstrap();
+                    bootstrap.group(boosGroup, workerGroup)
+                            .channel(NioServerSocketChannel.class)
+                            .localAddress(new InetSocketAddress(port))
+                            .childHandler(new HttpSupportInitializer(applicationContext));
+                    ChannelFuture future = bootstrap.bind().sync();
+                    future.channel().closeFuture().sync();
 
-        } catch (InterruptedException e) {
-            log.error("start netty server error :", e);
-        } finally {
-            log.info("shutdown netty server");
-            boosGroup.shutdownGracefully().sync();
-            workerGroup.shutdownGracefully().sync();
-        }
+                } catch (InterruptedException e) {
+                    log.error("start netty server error :", e);
+                } finally {
+                    log.info("shutdown netty server");
+                    try {
+                        boosGroup.shutdownGracefully().sync();
+                        workerGroup.shutdownGracefully().sync();
+                    } catch (InterruptedException e) {
+                        log.error("shutdown netty server error :", e);
+                    }
+                }
+            }
+        });
+        thread.setDaemon(true);
+        thread.start();
+
     }
 
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

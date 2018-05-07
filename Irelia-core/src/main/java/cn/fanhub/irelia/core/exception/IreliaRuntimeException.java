@@ -13,22 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.fanhub.irelia.core.spi;
-
-import cn.fanhub.irelia.core.model.IreliaBean;
-
-import java.io.Serializable;
-import java.util.List;
+package cn.fanhub.irelia.core.exception;
 
 /**
  *
  * @author chengfan
- * @version $Id: IreliaServiceHolder.java, v 0.1 2018年04月29日 下午11:17 chengfan Exp $
+ * @version $Id: IreliaRuntimeException.java, v 0.1 2018年05月06日 下午5:29 chengfan Exp $
  */
-public interface IreliaServiceHolder extends Serializable {
-    void loadRpc(String sysName, Object rpcBean);
-
-    IreliaBean getIreliaBean(String rpcValue);
-
-    List<IreliaBean> getBeansBySysName(String sysName);
+public class IreliaRuntimeException extends Exception {
+    public IreliaRuntimeException(String msg) {
+        super(msg);
+    }
 }

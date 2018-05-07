@@ -38,9 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 @Sharable
 public class HttpInboundHandler extends AbstractPreHandler {
     private String result = "";
-    /*
-     * 收到消息时，返回信息
-     */
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if(! (msg instanceof FullHttpRequest)){
@@ -81,9 +79,6 @@ public class HttpInboundHandler extends AbstractPreHandler {
         ctx.writeAndFlush(response);
     }
 
-    /*
-     * 建立连接时，返回消息
-     */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         log.info("连接的客户端地址: {}", ctx.channel().remoteAddress());

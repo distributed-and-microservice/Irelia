@@ -15,6 +15,7 @@
  */
 package cn.fanhub.irelia.upstream;
 
+import cn.fanhub.irelia.core.exception.IreliaRuntimeException;
 import cn.fanhub.irelia.core.model.IreliaRequest;
 import cn.fanhub.irelia.core.model.IreliaResponse;
 
@@ -33,7 +34,8 @@ public interface IreliaUpstream {
      * @param request the request
      * @return the irelia response
      */
-    IreliaResponse invoke(IreliaRequest request) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException;
+    IreliaResponse invoke(IreliaRequest request)
+            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, IreliaRuntimeException;
 
     /**
      * Name string.

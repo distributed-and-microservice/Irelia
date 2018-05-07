@@ -54,6 +54,8 @@ public class DubboStarter implements ApplicationContextAware {
         for (String springBeanName : this.applicationContext.getBeanDefinitionNames()) {
             holder.loadRpc(appName, this.applicationContext.getBean(springBeanName));
         }
+
+        new DubboClient().appServiceRegister(appName, service, registryUrl, protocolPort, serviceThreads);
     }
 
 }

@@ -18,6 +18,7 @@ package cn.fanhub.irelia.server.handler;
 import cn.fanhub.irelia.core.handler.AbstractPreHandler;
 import cn.fanhub.irelia.core.model.IreliaRequest;
 import cn.fanhub.irelia.core.model.RpcConfig;
+import cn.fanhub.irelia.core.upstream.UpstreamConfig;
 import cn.fanhub.irelia.server.http.HeaderKey;
 import com.alibaba.fastjson.JSON;
 import io.netty.buffer.ByteBuf;
@@ -44,7 +45,7 @@ public abstract class AbstractConfigHandler extends AbstractPreHandler {
         String rpcValue = headers.get(HeaderKey.rpcValue.name());
         String body = getBody(httpRequest);
 
-        RpcConfig config = getConfig(rpcValue);
+        RpcConfig config = getRpcConfig(rpcValue);
 
         IreliaRequest ireliaRequest = new IreliaRequest();
         ireliaRequest.setRpcValue(rpcValue);
@@ -53,9 +54,14 @@ public abstract class AbstractConfigHandler extends AbstractPreHandler {
         ireliaRequest.setRequestArgs(JSON.parseArray(body));
         ireliaRequest.setRpcConfig(config);
 
+
+        ireliaRequest.setUpstreamConfig(getUpstreamConfig(config.getAppName()));
+
         ctx.fireChannelRead(ireliaRequest);
 
     }
+
+    abstract public UpstreamConfig getUpstreamConfig(String rpcValue);
 
     @Override
     public int order() {
@@ -72,5 +78,5 @@ public abstract class AbstractConfigHandler extends AbstractPreHandler {
         return buf.toString(CharsetUtil.UTF_8);
     }
 
-    abstract public RpcConfig getConfig(String rpcValue);
+    abstract public RpcConfig getRpcConfig(String rpcValue);
 }

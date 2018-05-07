@@ -20,8 +20,6 @@ import cn.fanhub.irelia.core.model.IreliaResponse;
 import cn.fanhub.irelia.core.model.MethodInfo;
 import cn.fanhub.irelia.core.spi.IreliaService;
 import cn.fanhub.irelia.core.spi.IreliaServiceHolder;
-import lombok.Getter;
-import lombok.Setter;
 import org.apache.commons.lang3.reflect.MethodUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -33,8 +31,6 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class IreliaServiceImpl implements IreliaService {
 
-    @Getter
-    @Setter
     private IreliaServiceHolder ireliaServiceHolder;
 
 
@@ -49,4 +45,11 @@ public class IreliaServiceImpl implements IreliaService {
         return response;
     }
 
+    public IreliaServiceHolder getIreliaServiceHolder() {
+        return ireliaServiceHolder;
+    }
+
+    public void setIreliaServiceHolder(IreliaServiceHolder ireliaServiceHolder) {
+        this.ireliaServiceHolder = ireliaServiceHolder;
+    }
 }

@@ -15,6 +15,7 @@
  */
 package cn.fanhub.irelia.upstream.dubbo;
 
+import cn.fanhub.irelia.core.exception.IreliaRuntimeException;
 import cn.fanhub.irelia.core.spi.IreliaService;
 import cn.fanhub.irelia.core.model.IreliaRequest;
 import cn.fanhub.irelia.core.model.IreliaResponse;
@@ -47,7 +48,8 @@ public class DubboUpstream implements IreliaUpstream {
 
     }
 
-    public IreliaResponse invoke(IreliaRequest request) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public IreliaResponse invoke(IreliaRequest request)
+            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, IreliaRuntimeException {
         IreliaService service = DubboServiceManager.getInstance().getService((DubboUpstreamConfig) request.getUpstreamConfig());
         return service.invoke(request);
     }

@@ -40,7 +40,8 @@ public class IreliaServiceHolderImpl implements IreliaServiceHolder {
     private final Map<String, List<IreliaBean>> sysTemBeansMap = Maps.newConcurrentMap();
 
     public void loadRpc(String sysName, Object rpcBean) {
-        Method[] methods = MethodUtils.getMethodsWithAnnotation(rpcBean.getClass(), Rpc.class);
+        // todo 多接口
+        Method[] methods = MethodUtils.getMethodsWithAnnotation(rpcBean.getClass().getInterfaces()[0], Rpc.class);
         List<IreliaBean> beanList = Lists.newCopyOnWriteArrayList();
         for (Method method : methods) {
 
@@ -55,6 +56,8 @@ public class IreliaServiceHolderImpl implements IreliaServiceHolder {
                     .builder()
                     .paramTypes(parameterTypes)
                     .paramNames(paramNames)
+                    .itf(rpcBean.getClass().getInterfaces()[0].getName())
+                    .methodName(method.getName())
                     .returnType(method.getReturnType())
                     .build();
 

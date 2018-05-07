@@ -18,6 +18,8 @@ package cn.fanhub.irelia.core.model;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.io.Serializable;
+
 /**
  *
  * @author chengfan
@@ -26,10 +28,10 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class MethodInfo {
+public class MethodInfo implements Serializable {
     private String[] paramNames;
     private Class<?>[] paramTypes;
     private Class<?> returnType;
     private String methodName;
-    private Class itf;
+    private String itf;
 }

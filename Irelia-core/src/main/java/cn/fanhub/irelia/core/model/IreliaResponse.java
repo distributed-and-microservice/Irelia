@@ -17,13 +17,15 @@ package cn.fanhub.irelia.core.model;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  *
  * @author chengfan
  * @version $Id: IreliaResponse.java, v 0.1 2018年04月21日 下午4:25 chengfan Exp $
  */
 @Data
-public class IreliaResponse {
+public class IreliaResponse implements Serializable {
     private Object content;
 
 }

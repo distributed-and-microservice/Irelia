@@ -15,17 +15,20 @@
  */
 package cn.fanhub.irelia.upstream.dubbo;
 
+import cn.fanhub.irelia.core.exception.IreliaRuntimeException;
 import cn.fanhub.irelia.core.spi.IreliaService;
 import cn.fanhub.irelia.core.spi.IreliaServiceManager;
 import com.alibaba.dubbo.config.ApplicationConfig;
 import com.alibaba.dubbo.config.ReferenceConfig;
 import com.alibaba.dubbo.config.RegistryConfig;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *
  * @author chengfan
  * @version $Id: DubboServiceManager.java, v 0.1 2018年04月11日 下午9:41 chengfan Exp $
  */
+@Slf4j
 public class DubboServiceManager {
 
     public static DubboServiceManager getInstance() {
@@ -50,18 +53,34 @@ public class DubboServiceManager {
         registry.setUsername(config.getUsername());
         registry.setPassword(config.getPassword());
         registry.setGroup(config.getAppName());
+
         ReferenceConfig<IreliaService> reference = new ReferenceConfig<IreliaService>();
+        reference.setApplication(application);
+        reference.setRegistry(registry); // 多个注册中心可以用setRegistries()
+        reference.setInterface(IreliaService.class);
+        reference.setGroup(config.getAppName());
+        reference.setVersion("1.0.0");
+
         IreliaService service = reference.get();
         // 缓存
-        //serviceMap.put(config.getAppName(), service);
         IreliaServiceManager.register(config.getAppName(), service);
         return service;
     }
 
-    public IreliaService getService(DubboUpstreamConfig config) {
-        IreliaService service = IreliaServiceManager.getService(config.getAppName());
-        if (service == null) {
+    public IreliaService getService(DubboUpstreamConfig config) throws IreliaRuntimeException {
+        IreliaService service = null;
+        try {
+            service = IreliaServiceManager.getService(config.getAppName());
+        } catch (IreliaRuntimeException e) {
             service = createService(config);
+            if (log.isInfoEnabled()) {
+                log.info("try load service");
+            }
+
+            if (service == null) {
+                log.error("load error");
+                throw new IreliaRuntimeException("try load fail!");
+            }
         }
         return service;
     }
