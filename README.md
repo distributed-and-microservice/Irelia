@@ -110,6 +110,8 @@ public class IreliaConfig {
 
 - HttpInboundHandler: 接收 http 请求的组件（如果想使用 tcp，则需要自己编写 Handler）。
 
+- AbstractConfigHandler: 构造网关运行所需要的必要数据，需实现该抽象类。
+
 - RouteHandler: 路由组件
 
 
@@ -229,7 +231,9 @@ irelia handler 使用常见的 PRPE 模式。即 pre、post、route 和 error。
 
 - HttpInboundHandler: pre | order 为 0
 
-- SecurityHandler: pre | order 为 10
+- AbstractConfigHandler: pre | order 为 10
+
+- SecurityHandler: pre | order 为 20
 
 - RouteHandler: route | order 为 1000
 
