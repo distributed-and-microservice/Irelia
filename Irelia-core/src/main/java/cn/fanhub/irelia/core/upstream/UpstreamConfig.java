@@ -15,12 +15,14 @@
  */
 package cn.fanhub.irelia.core.upstream;
 
+import java.io.Serializable;
+
 /**
  *
  * @author chengfan
  * @version $Id: UpstreamConfig.java, v 0.1 2018年04月24日 下午10:05 chengfan Exp $
  */
-public interface UpstreamConfig {
+public interface UpstreamConfig extends Serializable {
     /**
      * Gets app id.
      *

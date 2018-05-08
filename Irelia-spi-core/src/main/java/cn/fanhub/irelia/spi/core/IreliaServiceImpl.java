@@ -15,14 +15,16 @@
  */
 package cn.fanhub.irelia.spi.core;
 
+import cn.fanhub.irelia.core.model.IreliaBean;
 import cn.fanhub.irelia.core.model.IreliaRequest;
 import cn.fanhub.irelia.core.model.IreliaResponse;
 import cn.fanhub.irelia.core.model.MethodInfo;
 import cn.fanhub.irelia.core.spi.IreliaService;
 import cn.fanhub.irelia.core.spi.IreliaServiceHolder;
-import org.apache.commons.lang3.reflect.MethodUtils;
+import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  *
@@ -36,11 +38,20 @@ public class IreliaServiceImpl implements IreliaService {
 
     public IreliaResponse invoke(IreliaRequest request) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         IreliaResponse response = new IreliaResponse();
+        IreliaBean ireliaBean = ireliaServiceHolder.getIreliaBean(request.getRpcValue());
+        MethodInfo methodInfo = ireliaBean.getMethodInfo();
+        //Object o = MethodUtils.invokeExactMethod(ireliaBean.getImpl(), methodInfo.getMethodName(), request.getRequestArgs(),
+        //
+        //  methodInfo.getParamTypes());
+        Method method = methodInfo.getMethod();
+        ReflectionUtils.makeAccessible(method);
+        Object[] params = new Object[request.getRequestArgs().size()];
 
-        MethodInfo methodInfo = ireliaServiceHolder.getIreliaBean(request.getRpcValue()).getMethodInfo();
-        Object o = MethodUtils.invokeExactMethod(methodInfo.getItf(), methodInfo.getMethodName(), request.getRequestArgs(),
-                methodInfo.getParamTypes());
-
+        // todo
+        for (int i = 0; i < request.getRequestArgs().size(); i++) {
+            params[i] = request.getRequestArgs().getString(i);
+        }
+        Object o = method.invoke(ireliaBean.getImpl(), params);
         response.setContent(o);
         return response;
     }

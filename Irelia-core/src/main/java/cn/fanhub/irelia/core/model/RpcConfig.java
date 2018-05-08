@@ -15,6 +15,8 @@
  */
 package cn.fanhub.irelia.core.model;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -22,12 +24,11 @@ import java.io.Serializable;
  * @author chengfan
  * @version $Id: RpcConfig.java, v 0.1 2018年04月30日 下午10:34 chengfan Exp $
  */
-public interface RpcConfig extends Serializable {
-    String getItfName();
+@Data
+public class RpcConfig implements Serializable {
 
-    String getMethodName();
-
-    String getAppName();
-
-    String getRpcValue();
+    private String itfName;
+    private String methodName;
+    private String appName;
+    private String rpcValue;
 }

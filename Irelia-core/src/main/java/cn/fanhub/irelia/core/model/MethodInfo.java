@@ -19,6 +19,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
 
 /**
  *
@@ -29,9 +30,10 @@ import java.io.Serializable;
 @Builder
 @Getter
 public class MethodInfo implements Serializable {
-    private String[] paramNames;
+    private String[]   paramNames;
     private Class<?>[] paramTypes;
-    private Class<?> returnType;
-    private String methodName;
-    private String itf;
+    private Class<?>   returnType;
+    private String     methodName;
+    private String     itf;
+    private Method     method;
 }

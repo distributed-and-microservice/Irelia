@@ -54,6 +54,7 @@ public class IreliaServiceHolderImpl implements IreliaServiceHolder {
             }
             MethodInfo methodInfo = MethodInfo
                     .builder()
+                    .method(method)
                     .paramTypes(parameterTypes)
                     .paramNames(paramNames)
                     .itf(rpcBean.getClass().getInterfaces()[0].getName())
@@ -66,6 +67,7 @@ public class IreliaServiceHolderImpl implements IreliaServiceHolder {
                     .rpcValue(annotation.value())
                     .rpcName(annotation.name())
                     .des(annotation.desc())
+                    .impl(rpcBean)
                     .methodInfo(methodInfo)
                     .build();
 

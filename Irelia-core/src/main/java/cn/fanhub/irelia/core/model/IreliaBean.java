@@ -36,4 +36,6 @@ public class IreliaBean implements Serializable {
     private String rpcName;
 
     private String des;
+
+    private Object impl;
 }

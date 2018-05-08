@@ -47,7 +47,8 @@ public class RouteHandler extends AbstractRouterHandler {
 
         IreliaResponse ireliaResponse = null;
 
-        ireliaResponse = UpstreamManager.getUpstream(ireliaRequest.getAppName()).invoke(ireliaRequest);
+        //todo
+        ireliaResponse = UpstreamManager.getUpstream("dubbo").invoke(ireliaRequest);
 
 
         send(ctx, ireliaResponse);

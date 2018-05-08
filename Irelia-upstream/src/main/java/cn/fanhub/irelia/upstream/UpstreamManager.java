@@ -43,6 +43,7 @@ public class UpstreamManager {
                 log.info("start load upstreams");
             }
             loadInitialUpstreams();
+
         } catch (IOException e) {
             log.error("load upstream error : io exception", e);
         } catch (ClassNotFoundException e) {
@@ -50,8 +51,9 @@ public class UpstreamManager {
         }
     }
 
+
     private static void loadInitialUpstreams() throws IOException, ClassNotFoundException {
-        Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources(UpstreamConfig.UPSTREAM_FILE);
+        Enumeration<URL> resources = UpstreamManager.class.getClassLoader().getResources(UpstreamConfig.UPSTREAM_FILE);
 
         while (resources.hasMoreElements()) {
             File file = new File(resources.nextElement().getFile());
