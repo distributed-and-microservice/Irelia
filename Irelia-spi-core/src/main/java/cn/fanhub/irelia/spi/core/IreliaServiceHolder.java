@@ -13,27 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.fanhub.irelia.core.model;
+package cn.fanhub.irelia.spi.core;
 
-import lombok.Builder;
-import lombok.Getter;
+import cn.fanhub.irelia.core.model.RpcConfig;
 
 import java.io.Serializable;
-import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  *
  * @author chengfan
- * @version $Id: MethodInfo.java, v 0.1 2018年04月26日 下午10:22 chengfan Exp $
+ * @version $Id: IreliaServiceHolder.java, v 0.1 2018年04月29日 下午11:17 chengfan Exp $
  */
+public interface IreliaServiceHolder extends Serializable {
+    void loadRpc(String sysName, Object rpcBean);
 
-@Builder
-@Getter
-public class MethodInfo implements Serializable {
-    private String[]   paramNames;
-    private Class<?>[] paramTypes;
-    private Class<?>   returnType;
-    private String     methodName;
-    private String     itf;
-    private Method     method;
+    IreliaBean getIreliaBean(String rpcValue);
+
+    List<IreliaBean> getBeansBySysName(String sysName);
+
+    List<RpcConfig> getRpcConfig(String sysName);
 }

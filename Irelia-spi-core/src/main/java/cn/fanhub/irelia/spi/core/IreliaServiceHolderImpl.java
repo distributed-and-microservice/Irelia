@@ -15,9 +15,7 @@
  */
 package cn.fanhub.irelia.spi.core;
 
-import cn.fanhub.irelia.core.model.IreliaBean;
-import cn.fanhub.irelia.core.model.MethodInfo;
-import cn.fanhub.irelia.core.spi.IreliaServiceHolder;
+import cn.fanhub.irelia.core.model.RpcConfig;
 import cn.fanhub.irelia.spi.core.annotation.Rpc;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -36,45 +34,65 @@ public class IreliaServiceHolderImpl implements IreliaServiceHolder {
 
     private final Map<String, IreliaBean> IreliaBeansMap = Maps.newConcurrentMap();
 
+    private final Map<String, List<RpcConfig>> rpcConfigMap = Maps.newConcurrentMap();
+
 
     private final Map<String, List<IreliaBean>> sysTemBeansMap = Maps.newConcurrentMap();
 
     public void loadRpc(String sysName, Object rpcBean) {
-        // todo 多接口
-        Method[] methods = MethodUtils.getMethodsWithAnnotation(rpcBean.getClass().getInterfaces()[0], Rpc.class);
+
         List<IreliaBean> beanList = Lists.newCopyOnWriteArrayList();
-        for (Method method : methods) {
+        List<RpcConfig> configList = Lists.newCopyOnWriteArrayList();
+        for (Class<?> intf : rpcBean.getClass().getInterfaces()) {
+            Method[] methods = MethodUtils.getMethodsWithAnnotation(intf, Rpc.class);
 
-            Rpc annotation = method.getAnnotation(Rpc.class);
+            for (Method method : methods) {
 
-            Class<?>[] parameterTypes = method.getParameterTypes();
-            String[] paramNames = new String[parameterTypes.length];
-            for (int i = 0; i < parameterTypes.length; i++) {
-                paramNames[i] = parameterTypes[i].getName();
+                Rpc annotation = method.getAnnotation(Rpc.class);
+
+                Class<?>[] parameterTypes = method.getParameterTypes();
+                String[] paramNames = new String[parameterTypes.length];
+                for (int i = 0; i < parameterTypes.length; i++) {
+                    paramNames[i] = parameterTypes[i].getName();
+                }
+                MethodInfo methodInfo = MethodInfo
+                        .builder()
+                        .paramTypes(parameterTypes)
+                        .paramNames(paramNames)
+                        //.intf(intf)
+                        .methodName(method.getName())
+                        //.method(method)
+                        .returnType(method.getReturnType())
+                        .build();
+
+                IreliaBean ireliaBean = IreliaBean
+                        .builder()
+                        .rpcValue(annotation.value())
+                        .rpcName(annotation.name())
+                        .des(annotation.desc())
+                        .impl(rpcBean)
+                        .methodInfo(methodInfo)
+                        .build();
+
+                RpcConfig rpcConfig = new RpcConfig();
+                rpcConfig.setAppName(sysName);
+                rpcConfig.setRpcName(annotation.name());
+                rpcConfig.setRpcValue(annotation.value());
+                rpcConfig.setDes(annotation.desc());
+                rpcConfig.setMethodName(method.getName());
+                rpcConfig.setItfName(intf.getName());
+
+
+                IreliaBeansMap.put(annotation.value(), ireliaBean);
+                configList.add(rpcConfig);
+                beanList.add(ireliaBean);
             }
-            MethodInfo methodInfo = MethodInfo
-                    .builder()
-                    .method(method)
-                    .paramTypes(parameterTypes)
-                    .paramNames(paramNames)
-                    .itf(rpcBean.getClass().getInterfaces()[0].getName())
-                    .methodName(method.getName())
-                    .returnType(method.getReturnType())
-                    .build();
-
-            IreliaBean ireliaBean = IreliaBean
-                    .builder()
-                    .rpcValue(annotation.value())
-                    .rpcName(annotation.name())
-                    .des(annotation.desc())
-                    .impl(rpcBean)
-                    .methodInfo(methodInfo)
-                    .build();
-
-            IreliaBeansMap.put(annotation.value(), ireliaBean);
-            beanList.add(ireliaBean);
         }
-        sysTemBeansMap.put(sysName, beanList);
+        if (beanList.size() > 0) {
+            sysTemBeansMap.put(sysName, beanList);
+            rpcConfigMap.put(sysName, configList);
+        }
+
     }
 
     public IreliaBean getIreliaBean(String rpcValue) {
@@ -84,5 +102,11 @@ public class IreliaServiceHolderImpl implements IreliaServiceHolder {
     public List<IreliaBean> getBeansBySysName(String sysName) {
         return sysTemBeansMap.get(sysName);
     }
+
+
+    public List<RpcConfig> getRpcConfig(String sysName) {
+        return rpcConfigMap.get(sysName);
+    }
+
 
 }

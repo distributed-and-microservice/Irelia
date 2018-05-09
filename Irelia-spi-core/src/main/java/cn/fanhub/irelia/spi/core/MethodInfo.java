@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.fanhub.irelia.core.model;
+package cn.fanhub.irelia.spi.core;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -23,19 +23,16 @@ import java.io.Serializable;
 /**
  *
  * @author chengfan
- * @version $Id: IreliaBean.java, v 0.1 2018年04月26日 下午10:22 chengfan Exp $
+ * @version $Id: MethodInfo.java, v 0.1 2018年04月26日 下午10:22 chengfan Exp $
  */
+
 @Builder
 @Getter
-public class IreliaBean implements Serializable {
-
-    private MethodInfo methodInfo;
-
-    private String rpcValue;
-
-    private String rpcName;
-
-    private String des;
-
-    private Object impl;
+public class MethodInfo implements Serializable {
+    private String[]   paramNames;
+    private Class<?>[] paramTypes;
+    private Class<?>   returnType;
+    private String     methodName;
+    //private Class      intf;
+    //private Method     method;
 }

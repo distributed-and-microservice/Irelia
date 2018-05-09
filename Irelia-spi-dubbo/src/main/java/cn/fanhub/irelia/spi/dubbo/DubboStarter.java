@@ -15,8 +15,8 @@
  */
 package cn.fanhub.irelia.spi.dubbo;
 
-import cn.fanhub.irelia.core.spi.IreliaService;
-import cn.fanhub.irelia.core.spi.IreliaServiceHolder;
+import cn.fanhub.irelia.spi.core.IreliaService;
+import cn.fanhub.irelia.spi.core.IreliaServiceHolder;
 import cn.fanhub.irelia.spi.core.IreliaServiceHolderImpl;
 import cn.fanhub.irelia.spi.core.IreliaServiceImpl;
 import lombok.Setter;

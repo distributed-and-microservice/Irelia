@@ -15,12 +15,8 @@
  */
 package cn.fanhub.irelia.spi.core;
 
-import cn.fanhub.irelia.core.model.IreliaBean;
 import cn.fanhub.irelia.core.model.IreliaRequest;
 import cn.fanhub.irelia.core.model.IreliaResponse;
-import cn.fanhub.irelia.core.model.MethodInfo;
-import cn.fanhub.irelia.core.spi.IreliaService;
-import cn.fanhub.irelia.core.spi.IreliaServiceHolder;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -43,11 +39,12 @@ public class IreliaServiceImpl implements IreliaService {
         //Object o = MethodUtils.invokeExactMethod(ireliaBean.getImpl(), methodInfo.getMethodName(), request.getRequestArgs(),
         //
         //  methodInfo.getParamTypes());
-        Method method = methodInfo.getMethod();
+
+        Method method = ireliaBean.getImpl().getClass().getMethod(methodInfo.getMethodName(), methodInfo.getParamTypes());
+        //Method method = methodInfo.getMethod();
         ReflectionUtils.makeAccessible(method);
         Object[] params = new Object[request.getRequestArgs().size()];
 
-        // todo
         for (int i = 0; i < request.getRequestArgs().size(); i++) {
             params[i] = request.getRequestArgs().getString(i);
         }

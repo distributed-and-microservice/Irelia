@@ -16,9 +16,9 @@
 package cn.fanhub.irelia.upstream.dubbo;
 
 import cn.fanhub.irelia.core.exception.IreliaRuntimeException;
-import cn.fanhub.irelia.core.spi.IreliaService;
 import cn.fanhub.irelia.core.model.IreliaRequest;
 import cn.fanhub.irelia.core.model.IreliaResponse;
+import cn.fanhub.irelia.spi.core.IreliaService;
 import cn.fanhub.irelia.upstream.IreliaUpstream;
 import cn.fanhub.irelia.upstream.UpstreamManager;
 import lombok.extern.slf4j.Slf4j;

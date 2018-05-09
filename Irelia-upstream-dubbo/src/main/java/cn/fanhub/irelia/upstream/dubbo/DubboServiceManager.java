@@ -16,8 +16,8 @@
 package cn.fanhub.irelia.upstream.dubbo;
 
 import cn.fanhub.irelia.core.exception.IreliaRuntimeException;
-import cn.fanhub.irelia.core.spi.IreliaService;
-import cn.fanhub.irelia.core.spi.IreliaServiceManager;
+import cn.fanhub.irelia.spi.core.IreliaService;
+import cn.fanhub.irelia.spi.core.IreliaServiceManager;
 import com.alibaba.dubbo.config.ApplicationConfig;
 import com.alibaba.dubbo.config.ReferenceConfig;
 import com.alibaba.dubbo.config.RegistryConfig;
