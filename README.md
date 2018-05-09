@@ -205,7 +205,7 @@ public class Config {
 
 public interface DemoService {
 
-    @Rpc(value = "test", name = "testName", desc = "testDes")
+    @Rpc(value = "cn.fanhub.dubbo.sayhello", name = "testName", desc = "testDes")
     String sayHello(String name);
 }
 
