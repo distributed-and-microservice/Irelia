@@ -16,6 +16,7 @@
 package cn.fanhub.irelia.spi.core;
 
 import cn.fanhub.irelia.core.model.RpcConfig;
+import cn.fanhub.irelia.spi.core.model.IreliaBean;
 
 import java.io.Serializable;
 import java.util.List;

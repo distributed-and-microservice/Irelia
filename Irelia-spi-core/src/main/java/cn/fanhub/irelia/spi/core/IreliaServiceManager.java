@@ -43,7 +43,7 @@ public class IreliaServiceManager {
         IreliaService ireliaService = SERVICE_MAP.get(appName);
         if (ireliaService == null) {
             log.error("not found this service：" + appName);
-            throw new IreliaRuntimeException(IreliaResponseCode.SERVER_ERR, "not found this service");
+            throw new IreliaRuntimeException(IreliaResponseCode.SERVER_ERR, "not found this service" + appName);
         }
         return ireliaService;
     }
