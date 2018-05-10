@@ -59,6 +59,9 @@ public class HttpSupportInitializer extends ChannelInitializer<Channel> {
         });
     }
 
+    /**
+     *  默认只支持 http 的请求
+     */
     protected void initChannel(Channel channel) throws Exception {
         log.info("init pipeline");
         for (Entry<String, Handler> handlerEntry : handlerList) {

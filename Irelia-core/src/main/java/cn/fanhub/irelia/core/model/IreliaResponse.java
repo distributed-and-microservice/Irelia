@@ -27,5 +27,7 @@ import java.io.Serializable;
 @Data
 public class IreliaResponse implements Serializable {
     private Object content;
+    private int code;
+    private String message;
 
 }

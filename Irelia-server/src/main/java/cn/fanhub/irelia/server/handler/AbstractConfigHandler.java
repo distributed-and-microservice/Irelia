@@ -61,11 +61,9 @@ public abstract class AbstractConfigHandler extends AbstractPreHandler {
 
     }
 
-    abstract public UpstreamConfig getUpstreamConfig(String rpcValue);
-
     @Override
     public int order() {
-        return 1;
+        return 10;
     }
 
     /**
@@ -79,4 +77,6 @@ public abstract class AbstractConfigHandler extends AbstractPreHandler {
     }
 
     abstract public RpcConfig getRpcConfig(String rpcValue);
+
+    abstract public UpstreamConfig getUpstreamConfig(String rpcValue);
 }

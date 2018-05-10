@@ -16,10 +16,10 @@
 package cn.fanhub.irelia.server.handler;
 
 import cn.fanhub.irelia.common.utils.ResponseUtil;
-import cn.fanhub.irelia.core.handler.AbstractRouterHandler;
-import cn.fanhub.irelia.core.model.IreliaRequest;
+import cn.fanhub.irelia.core.exception.IreliaRuntimeException;
+import cn.fanhub.irelia.core.handler.AbstractErrorHandler;
 import cn.fanhub.irelia.core.model.IreliaResponse;
-import cn.fanhub.irelia.upstream.UpstreamManager;
+import cn.fanhub.irelia.core.model.IreliaResponseCode;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -28,24 +28,27 @@ import lombok.extern.slf4j.Slf4j;
 /**
  *
  * @author chengfan
- * @version $Id: RouteHandler.java, v 0.1 2018年04月09日 下午10:41 chengfan Exp $
+ * @version $Id: ErrorHandler.java, v 0.1 2018年05月10日 下午8:43 chengfan Exp $
  */
-@Slf4j
 @Sharable
-public class RouteHandler extends AbstractRouterHandler {
+@Slf4j
+public class ErrorHandler extends AbstractErrorHandler {
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        IreliaRequest ireliaRequest = (IreliaRequest)msg;
-
-        IreliaResponse ireliaResponse = UpstreamManager.getUpstream(ireliaRequest.getUpstreamConfig().getName()).invoke(ireliaRequest);
-
-        ResponseUtil.send(ctx, ireliaResponse, HttpResponseStatus.OK);
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        IreliaResponse response = new IreliaResponse();
+        if (cause instanceof IreliaRuntimeException) {
+            response.setCode(((IreliaRuntimeException) cause).getResponseCode().getCode());
+            response.setMessage(((IreliaRuntimeException) cause).getResponseCode().getMessage());
+        } else {
+            response.setCode(IreliaResponseCode.SERVER_ERR.getCode());
+        }
+        response.setContent(cause.getMessage());
+        ResponseUtil.send(ctx, response, HttpResponseStatus.BAD_GATEWAY);
     }
 
-
-
+    @Override
     public int order() {
-        return 1000;
+        return 2000;
     }
 }

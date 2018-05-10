@@ -36,6 +36,6 @@ public class SecurityHandler extends AbstractPreHandler {
     }
 
     public int order() {
-        return 10;
+        return 20;
     }
 }

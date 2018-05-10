@@ -29,4 +29,11 @@ public interface UpstreamConfig extends Serializable {
      * @return the app id
      */
     String getAppName();
+
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
+    String getName();
 }

@@ -15,18 +15,15 @@
  */
 package cn.fanhub.irelia.server.handler;
 
+import cn.fanhub.irelia.common.utils.ResponseUtil;
 import cn.fanhub.irelia.core.handler.AbstractPreHandler;
-import io.netty.buffer.Unpooled;
+import cn.fanhub.irelia.core.model.IreliaResponse;
+import cn.fanhub.irelia.core.model.IreliaResponseCode;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.HttpVersion;
-import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -37,13 +34,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Sharable
 public class HttpInboundHandler extends AbstractPreHandler {
-    private String result = "";
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if(! (msg instanceof FullHttpRequest)){
-            result = "暂时不支持非 http 请求";
-            send(ctx, result, HttpResponseStatus.BAD_REQUEST);
+            IreliaResponse response = new IreliaResponse();
+            response.setCode(IreliaResponseCode.NOT_SUPPORT_REQUEST.getCode());
+            response.setMessage(IreliaResponseCode.NOT_SUPPORT_REQUEST.getMessage());
+            ResponseUtil.send(ctx, response, HttpResponseStatus.BAD_REQUEST);
             return;
         }
         FullHttpRequest httpRequest = (FullHttpRequest)msg;
@@ -52,8 +50,10 @@ public class HttpInboundHandler extends AbstractPreHandler {
             HttpMethod method = httpRequest.method();//获取请求方法
             //如果不是这个路径，就直接返回错误
             if(!"/irelia".equalsIgnoreCase(path) || !HttpMethod.POST.equals(method)){
-                result = "请求路径错误或者非 POST 请求";
-                send(ctx, result, HttpResponseStatus.BAD_REQUEST);
+                IreliaResponse response = new IreliaResponse();
+                response.setCode(IreliaResponseCode.INVALID_QUERY_URL.getCode());
+                response.setMessage(IreliaResponseCode.INVALID_QUERY_URL.getMessage());
+                ResponseUtil.send(ctx, response, HttpResponseStatus.BAD_REQUEST);
                 return;
             }
             //如果是POST请求 todo
@@ -65,18 +65,6 @@ public class HttpInboundHandler extends AbstractPreHandler {
             //释放请求
             httpRequest.release();
         }
-    }
-
-    /**
-     * 发送的返回值
-     * @param ctx     返回
-     * @param context 消息
-     * @param status 状态
-     */
-    private void send(ChannelHandlerContext ctx, String context,HttpResponseStatus status) {
-        FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, status, Unpooled.copiedBuffer(context, CharsetUtil.UTF_8));
-        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain; charset=UTF-8");
-        ctx.writeAndFlush(response);
     }
 
     @Override

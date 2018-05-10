@@ -16,6 +16,7 @@
 package cn.fanhub.irelia.upstream.dubbo;
 
 import cn.fanhub.irelia.core.exception.IreliaRuntimeException;
+import cn.fanhub.irelia.core.model.IreliaResponseCode;
 import cn.fanhub.irelia.spi.core.IreliaService;
 import cn.fanhub.irelia.spi.core.IreliaServiceManager;
 import com.alibaba.dubbo.config.ApplicationConfig;
@@ -79,7 +80,7 @@ public class DubboServiceManager {
 
             if (service == null) {
                 log.error("load error");
-                throw new IreliaRuntimeException("try load fail!");
+                throw new IreliaRuntimeException(IreliaResponseCode.SERVER_ERR, "try load fail!");
             }
         }
         return service;

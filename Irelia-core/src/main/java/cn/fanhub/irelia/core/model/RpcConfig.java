@@ -28,12 +28,15 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 public class RpcConfig implements Serializable {
-
-
     private String itfName;
     private String methodName;
     private String appName;
     private String rpcValue;
     private String rpcName;
     private String des;
+
+    /**
+     * 扩展字段，可以存为一个大的 json 字段，用来为自定义的 handler 提供配置功能
+     */
+    private String extension;
 }

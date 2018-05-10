@@ -16,6 +16,7 @@
 package cn.fanhub.irelia.spi.core;
 
 import cn.fanhub.irelia.core.exception.IreliaRuntimeException;
+import cn.fanhub.irelia.core.model.IreliaResponseCode;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
@@ -42,7 +43,7 @@ public class IreliaServiceManager {
         IreliaService ireliaService = SERVICE_MAP.get(appName);
         if (ireliaService == null) {
             log.error("not found this service：" + appName);
-            throw new IreliaRuntimeException("not found this service");
+            throw new IreliaRuntimeException(IreliaResponseCode.SERVER_ERR, "not found this service");
         }
         return ireliaService;
     }

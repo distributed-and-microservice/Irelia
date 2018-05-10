@@ -41,6 +41,11 @@ public class Bootstrap implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
 
+    /**
+     * 网关会单独起一个线程运行，否则会阻塞主线程。
+     * todo 线程池
+     * @throws InterruptedException
+     */
     public void start() throws InterruptedException {
         log.info("start netty server");
         Thread thread = new Thread(new Runnable() {

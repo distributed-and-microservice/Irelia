@@ -25,11 +25,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>cn.fanhub</groupId>
-            <artifactId>Irelia-common-util</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
         </dependency>

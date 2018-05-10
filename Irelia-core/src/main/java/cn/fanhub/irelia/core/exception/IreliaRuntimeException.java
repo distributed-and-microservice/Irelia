@@ -15,13 +15,33 @@
  */
 package cn.fanhub.irelia.core.exception;
 
+import cn.fanhub.irelia.core.model.IreliaResponseCode;
+import lombok.Data;
+
 /**
  *
  * @author chengfan
  * @version $Id: IreliaRuntimeException.java, v 0.1 2018年05月06日 下午5:29 chengfan Exp $
  */
+@Data
 public class IreliaRuntimeException extends Exception {
-    public IreliaRuntimeException(String msg) {
-        super(msg);
+
+    private IreliaResponseCode responseCode;
+
+    private String message;
+
+    private Throwable cause;
+
+    public IreliaRuntimeException(IreliaResponseCode responseCode, String message) {
+        super(message);
+        this.responseCode = responseCode;
+        this.message = message;
+    }
+
+    public IreliaRuntimeException(IreliaResponseCode responseCode, String message, Throwable cause) {
+        super(message, cause);
+        this.responseCode = responseCode;
+        this.message = message;
+        this.cause = cause;
     }
 }
