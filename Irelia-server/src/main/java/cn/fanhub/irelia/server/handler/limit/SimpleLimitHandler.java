@@ -13,31 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.fanhub.irelia.core.model;
+package cn.fanhub.irelia.server.handler.limit;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
+import cn.fanhub.irelia.core.model.LimitConfig;
 
 /**
  *
  * @author chengfan
- * @version $Id: RpcConfig.java, v 0.1 2018年04月30日 下午10:34 chengfan Exp $
+ * @version $Id: SimpleLimitHandler.java, v 0.1 2018年05月13日 下午1:41 chengfan Exp $
  */
-@Data
-@NoArgsConstructor
-public class RpcConfig implements Serializable {
-    private String itfName;
-    private String methodName;
-    private String appName;
-    private String rpcValue;
-    private String rpcName;
-    private String des;
-    private LimitConfig limitConfig;
-
-    /**
-     * 扩展字段，可以存为一个大的 json 字段，用来为自定义的 handler 提供配置功能
-     */
-    private String extension;
+public class SimpleLimitHandler extends AbstractLimitHandler {
+    
+    @Override
+    boolean shouldLimit(LimitConfig limitConfig) {
+        return false;
+    }
 }

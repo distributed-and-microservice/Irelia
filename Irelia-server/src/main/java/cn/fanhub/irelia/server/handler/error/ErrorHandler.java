@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.fanhub.irelia.server.handler;
+package cn.fanhub.irelia.server.handler.error;
 
 import cn.fanhub.irelia.common.utils.ResponseUtil;
 import cn.fanhub.irelia.core.exception.IreliaRuntimeException;

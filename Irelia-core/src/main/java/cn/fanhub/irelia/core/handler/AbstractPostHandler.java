@@ -16,7 +16,13 @@
 package cn.fanhub.irelia.core.handler;
 
 import cn.fanhub.irelia.core.Handler;
+import cn.fanhub.irelia.core.future.ErrorChannelFutureListener;
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundHandlerAdapter;
+import io.netty.channel.ChannelPromise;
+import lombok.Setter;
+
+import java.net.SocketAddress;
 
 /**
  *
@@ -24,4 +30,15 @@ import io.netty.channel.ChannelOutboundHandlerAdapter;
  * @version $Id: AbstractPostHandler.java, v 0.1 2018年04月16日 下午10:37 chengfan Exp $
  */
 public abstract class AbstractPostHandler extends ChannelOutboundHandlerAdapter implements Handler {
+
+    @Setter
+    private ErrorChannelFutureListener errorChannelFutureListener;
+
+    @Override
+    public void bind(ChannelHandlerContext ctx, SocketAddress localAddress, ChannelPromise promise) throws Exception {
+        super.bind(ctx, localAddress, promise);
+        if (errorChannelFutureListener != null) {
+            promise.addListener(errorChannelFutureListener);
+        }
+    }
 }

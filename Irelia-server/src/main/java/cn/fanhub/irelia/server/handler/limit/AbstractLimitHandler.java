@@ -13,31 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.fanhub.irelia.core.model;
+package cn.fanhub.irelia.server.handler.limit;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
+import cn.fanhub.irelia.core.handler.AbstractPreHandler;
+import cn.fanhub.irelia.core.model.LimitConfig;
+import io.netty.channel.ChannelHandlerContext;
 
 /**
  *
  * @author chengfan
- * @version $Id: RpcConfig.java, v 0.1 2018年04月30日 下午10:34 chengfan Exp $
+ * @version $Id: AbstractLimitHandler.java, v 0.1 2018年05月13日 下午1:39 chengfan Exp $
  */
-@Data
-@NoArgsConstructor
-public class RpcConfig implements Serializable {
-    private String itfName;
-    private String methodName;
-    private String appName;
-    private String rpcValue;
-    private String rpcName;
-    private String des;
-    private LimitConfig limitConfig;
+public abstract class AbstractLimitHandler extends AbstractPreHandler {
 
-    /**
-     * 扩展字段，可以存为一个大的 json 字段，用来为自定义的 handler 提供配置功能
-     */
-    private String extension;
+    @Override
+    public final void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        super.channelRead(ctx, msg);
+    }
+
+    @Override
+    public int order() {
+        return 110;
+    }
+
+    abstract boolean shouldLimit(LimitConfig limitConfig);
 }
