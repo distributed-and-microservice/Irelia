@@ -46,9 +46,9 @@ public class HttpInboundHandler extends AbstractPreHandler {
         }
         FullHttpRequest httpRequest = (FullHttpRequest)msg;
         try{
-            String path=httpRequest.uri();          //获取路径
-            HttpMethod method = httpRequest.method();//获取请求方法
-            //如果不是这个路径，就直接返回错误
+            String path=httpRequest.uri();          // 获取路径
+            HttpMethod method = httpRequest.method();// 获取请求方法
+            // 如果不是这个路径，就直接返回错误
             if(!"/irelia".equalsIgnoreCase(path) || !HttpMethod.POST.equals(method)){
                 IreliaResponse response = new IreliaResponse();
                 response.setCode(IreliaResponseCode.INVALID_QUERY_URL.getCode());
@@ -56,7 +56,7 @@ public class HttpInboundHandler extends AbstractPreHandler {
                 ResponseUtil.send(ctx, response, HttpResponseStatus.BAD_REQUEST);
                 return;
             }
-            //如果是POST请求 todo
+            // 如果是POST请求 todo
             ctx.fireChannelRead(msg);
 
         } catch(Exception e) {

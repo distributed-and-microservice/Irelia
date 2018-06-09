@@ -17,25 +17,63 @@ package cn.fanhub.irelia.server.handler.error;
 
 import cn.fanhub.irelia.common.utils.ResponseUtil;
 import cn.fanhub.irelia.core.exception.IreliaRuntimeException;
+import cn.fanhub.irelia.server.future.ErrorChannelFutureListener;
 import cn.fanhub.irelia.core.handler.AbstractErrorHandler;
 import cn.fanhub.irelia.core.model.IreliaResponse;
 import cn.fanhub.irelia.core.model.IreliaResponseCode;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelPromise;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.net.SocketAddress;
+
 /**
- *
+ * 全局异常处理
  * @author chengfan
  * @version $Id: ErrorHandler.java, v 0.1 2018年05月10日 下午8:43 chengfan Exp $
  */
 @Sharable
 @Slf4j
 public class ErrorHandler extends AbstractErrorHandler {
+    
+    @Setter
+    private ErrorChannelFutureListener channelFutureListener;
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+    public void connect(ChannelHandlerContext ctx, SocketAddress remoteAddress, SocketAddress localAddress, ChannelPromise promise) {
+        ctx.connect(remoteAddress, localAddress, promise.addListener(channelFutureListener));
+    }
+
+    @Override
+    public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
+        ctx.write(msg, promise.addListener(channelFutureListener));
+    }
+
+    @Override
+    public void bind(ChannelHandlerContext ctx, SocketAddress localAddress, ChannelPromise promise) {
+         ctx.bind(localAddress, promise.addListener(channelFutureListener));
+    }
+
+    @Override
+    public void close(ChannelHandlerContext ctx, ChannelPromise promise) {
+        ctx.close(promise.addListener(channelFutureListener));
+    }
+
+    @Override
+    public void disconnect(ChannelHandlerContext ctx, ChannelPromise promise) {
+        ctx.disconnect(promise.addListener(channelFutureListener));
+    }
+
+    @Override
+    public void deregister(ChannelHandlerContext ctx, ChannelPromise promise) {
+        ctx.deregister(promise.addListener(channelFutureListener));
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         IreliaResponse response = new IreliaResponse();
         if (cause instanceof IreliaRuntimeException) {
             response.setCode(((IreliaRuntimeException) cause).getResponseCode().getCode());

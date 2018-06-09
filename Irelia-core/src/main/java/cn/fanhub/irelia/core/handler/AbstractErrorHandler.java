@@ -16,13 +16,13 @@
 package cn.fanhub.irelia.core.handler;
 
 import cn.fanhub.irelia.core.Handler;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.ChannelDuplexHandler;
 
 /**
  *
  * @author chengfan
  * @version $Id: AbstractErrorHandler.java, v 0.1 2018年04月16日 下午10:38 chengfan Exp $
  */
-public abstract class AbstractErrorHandler extends ChannelInboundHandlerAdapter implements Handler {
+public abstract class AbstractErrorHandler extends ChannelDuplexHandler implements Handler {
 
 }

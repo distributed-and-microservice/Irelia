@@ -51,7 +51,6 @@ public class UpstreamManager {
         }
     }
 
-
     private static void loadInitialUpstreams() throws IOException, ClassNotFoundException {
         Enumeration<URL> resources = UpstreamManager.class.getClassLoader().getResources(UpstreamConfig.UPSTREAM_FILE);
 
@@ -71,7 +70,6 @@ public class UpstreamManager {
 
             bf.close();
             fileReader.close();
-
         }
 
     }

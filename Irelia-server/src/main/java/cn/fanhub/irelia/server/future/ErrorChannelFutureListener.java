@@ -13,11 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.fanhub.irelia.core.future;
+package cn.fanhub.irelia.server.future;
 
+import cn.fanhub.irelia.common.utils.ResponseUtil;
 import cn.fanhub.irelia.core.exception.IreliaRuntimeException;
+import cn.fanhub.irelia.core.model.IreliaResponse;
+import cn.fanhub.irelia.core.model.IreliaResponseCode;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -28,12 +32,23 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ErrorChannelFutureListener implements ChannelFutureListener {
     @Override
-    public void operationComplete(ChannelFuture future) throws Exception {
+    public void operationComplete(ChannelFuture future) {
         if (!future.isSuccess()) {
-            if (future.cause() instanceof IreliaRuntimeException) {
-                log.error("post error" , future.cause());
+            Throwable cause = future.cause();
+            if (cause instanceof IreliaRuntimeException) {
+                log.error("post error" , cause);
                 future.channel().close();
             }
+            IreliaResponse response = new IreliaResponse();
+            if (cause instanceof IreliaRuntimeException) {
+                response.setCode(((IreliaRuntimeException) cause).getResponseCode().getCode());
+                response.setMessage(((IreliaRuntimeException) cause).getResponseCode().getMessage());
+            } else {
+                response.setCode(IreliaResponseCode.SERVER_ERR.getCode());
+            }
+            response.setContent(cause.getMessage());
+            // todo 有瑕疵啊
+            ResponseUtil.send(future.channel().pipeline().lastContext(), response, HttpResponseStatus.BAD_GATEWAY);
         }
     }
 }

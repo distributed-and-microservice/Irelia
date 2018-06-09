@@ -39,6 +39,7 @@ public class DubboServiceManager {
     private DubboServiceManager() {
 
     }
+
     private static class DubboServiceManagerHolder {
         private final static DubboServiceManager INSTANCE = new DubboServiceManager();
     }
