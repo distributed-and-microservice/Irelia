@@ -15,9 +15,13 @@
  */
 package cn.fanhub.irelia.server.handler.limit;
 
+import cn.fanhub.irelia.common.utils.ResponseUtil;
 import cn.fanhub.irelia.core.handler.AbstractPreHandler;
-import cn.fanhub.irelia.core.model.LimitConfig;
+import cn.fanhub.irelia.core.model.IreliaRequest;
+import cn.fanhub.irelia.core.model.IreliaResponse;
+import cn.fanhub.irelia.core.model.IreliaResponseCode;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
  *
@@ -28,7 +32,16 @@ public abstract class AbstractLimitHandler extends AbstractPreHandler {
 
     @Override
     public final void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        super.channelRead(ctx, msg);
+        IreliaRequest ireliaRequest = (IreliaRequest)msg;
+        if (shouldLimit(ireliaRequest)) {
+            IreliaResponse response = new IreliaResponse();
+            response.setCode(IreliaResponseCode.RPC_BEEN_LIMITED.getCode());
+            response.setMessage(IreliaResponseCode.RPC_BEEN_LIMITED.getMessage());
+            ResponseUtil.send(ctx, response, HttpResponseStatus.OK);
+        } else {
+            ctx.fireChannelRead(msg);
+        }
+
     }
 
     @Override
@@ -36,5 +49,5 @@ public abstract class AbstractLimitHandler extends AbstractPreHandler {
         return 110;
     }
 
-    abstract boolean shouldLimit(LimitConfig limitConfig);
+    abstract boolean shouldLimit(IreliaRequest ireliaRequest);
 }

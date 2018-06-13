@@ -22,6 +22,8 @@ package cn.fanhub.irelia.core.model;
  */
 public enum IreliaResponseCode {
 
+    RPC_BEEN_LIMITED(3004, "RPC 被限流"),
+    NOT_OPEN_RPC(3003, "没有开启的 RPC"),
     INVALID_QUERY_URL(3002, "非法的请求路径"),
     NOT_SUPPORT_REQUEST(3001, "不支持的请求类型"),
     SERVER_ERR(2001, "服务端错误"),

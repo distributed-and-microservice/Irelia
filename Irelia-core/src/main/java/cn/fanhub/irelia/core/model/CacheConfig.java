@@ -27,4 +27,5 @@ import java.io.Serializable;
 @Data
 public class CacheConfig implements Serializable {
     private boolean cache = false;
+    private long cacheTime = 0;
 }

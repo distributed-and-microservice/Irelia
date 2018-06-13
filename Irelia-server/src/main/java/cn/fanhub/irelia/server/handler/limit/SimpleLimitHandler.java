@@ -15,7 +15,12 @@
  */
 package cn.fanhub.irelia.server.handler.limit;
 
+import cn.fanhub.irelia.core.model.IreliaRequest;
 import cn.fanhub.irelia.core.model.LimitConfig;
+import com.google.common.collect.Maps;
+import com.google.common.util.concurrent.RateLimiter;
+
+import java.util.Map;
 
 /**
  *
@@ -23,9 +28,21 @@ import cn.fanhub.irelia.core.model.LimitConfig;
  * @version $Id: SimpleLimitHandler.java, v 0.1 2018年05月13日 下午1:41 chengfan Exp $
  */
 public class SimpleLimitHandler extends AbstractLimitHandler {
+
+    private static Map<String, RateLimiter> limiterMap = Maps.newConcurrentMap();
     
     @Override
-    boolean shouldLimit(LimitConfig limitConfig) {
+    boolean shouldLimit(IreliaRequest ireliaRequest) {
+        LimitConfig limitConfig = ireliaRequest.getRpcConfig().getLimitConfig();
+        if (limitConfig.isLimit()) {
+
+            RateLimiter limiter = limiterMap.get(ireliaRequest.getRpcValue());
+            if (limiter == null) {
+                limiter = RateLimiter.create(limitConfig.getFrequency());;
+                limiterMap.put(ireliaRequest.getRpcValue(), limiter);
+            }
+            return !limiter.tryAcquire();
+        }
         return false;
     }
 }
