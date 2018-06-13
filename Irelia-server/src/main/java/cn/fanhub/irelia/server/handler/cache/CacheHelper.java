@@ -13,20 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.fanhub.irelia.core.model;
+package cn.fanhub.irelia.server.handler.cache;
 
-import lombok.Data;
-
-import java.io.Serializable;
+import cn.fanhub.irelia.core.model.IreliaResponse;
+import org.springframework.util.Assert;
 
 /**
  *
  * @author chengfan
- * @version $Id: LimitConfig.java, v 0.1 2018年05月13日 下午1:36 chengfan Exp $
+ * @version $Id: CacheHelper.java, v 0.1 2018年06月11日 下午5:26 chengfan Exp $
  */
-@Data
-public class LimitConfig implements Serializable {
-    private boolean limit = false;
-    private int frequency = 0;
-    private String limitTemplate = "系统忙，请稍后再试";
+public class CacheHelper {
+
+    private static AbstractCacheHandler CACHE_HANDLER;
+
+    public static void register(AbstractCacheHandler cacheHandler) {
+        CACHE_HANDLER = cacheHandler;
+    }
+
+    public static void setValue(String rpcValue, IreliaResponse response) {
+        Assert.notNull(CACHE_HANDLER, "NO CACHE_HANDLER ");
+        CACHE_HANDLER.put(rpcValue, response);
+    }
 }

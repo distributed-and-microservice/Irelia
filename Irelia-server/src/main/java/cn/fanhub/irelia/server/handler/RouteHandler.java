@@ -19,6 +19,7 @@ import cn.fanhub.irelia.common.utils.ResponseUtil;
 import cn.fanhub.irelia.core.handler.AbstractRouterHandler;
 import cn.fanhub.irelia.core.model.IreliaRequest;
 import cn.fanhub.irelia.core.model.IreliaResponse;
+import cn.fanhub.irelia.server.handler.cache.CacheHelper;
 import cn.fanhub.irelia.upstream.UpstreamManager;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
@@ -40,7 +41,16 @@ public class RouteHandler extends AbstractRouterHandler {
 
         IreliaResponse ireliaResponse = UpstreamManager.getUpstream(ireliaRequest.getUpstreamConfig().getName()).invoke(ireliaRequest);
 
+        if (((IreliaRequest) msg).getRpcConfig().getCacheConfig().isCache()) {
+            CacheHelper.setValue(ireliaRequest.getRpcValue(), ireliaResponse);
+            if (log.isInfoEnabled()) {
+                log.info("{} response cached", ireliaRequest.getRpcValue());
+            }
+        }
+
         ResponseUtil.send(ctx, ireliaResponse, HttpResponseStatus.OK);
+
+
     }
 
 

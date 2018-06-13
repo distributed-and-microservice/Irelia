@@ -15,6 +15,8 @@
  */
 package cn.fanhub.irelia.spi.core.impl;
 
+import cn.fanhub.irelia.core.model.CacheConfig;
+import cn.fanhub.irelia.core.model.LimitConfig;
 import cn.fanhub.irelia.core.model.RpcConfig;
 import cn.fanhub.irelia.spi.core.model.IreliaBean;
 import cn.fanhub.irelia.spi.core.IreliaServiceHolder;
@@ -84,6 +86,8 @@ public class IreliaServiceHolderImpl implements IreliaServiceHolder {
                 rpcConfig.setDes(annotation.desc());
                 rpcConfig.setMethodName(method.getName());
                 rpcConfig.setItfName(intf.getName());
+                rpcConfig.setCacheConfig(new CacheConfig());
+                rpcConfig.setLimitConfig(new LimitConfig());
 
 
                 IreliaBeansMap.put(annotation.value(), ireliaBean);

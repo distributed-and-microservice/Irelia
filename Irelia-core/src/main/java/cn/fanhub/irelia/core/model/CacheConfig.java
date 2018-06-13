@@ -16,29 +16,15 @@
 package cn.fanhub.irelia.core.model;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 /**
  *
  * @author chengfan
- * @version $Id: RpcConfig.java, v 0.1 2018年04月30日 下午10:34 chengfan Exp $
+ * @version $Id: CacheConfig.java, v 0.1 2018年06月11日 下午3:28 chengfan Exp $
  */
 @Data
-@NoArgsConstructor
-public class RpcConfig implements Serializable {
-    private String itfName;
-    private String methodName;
-    private String appName;
-    private String rpcValue;
-    private String rpcName;
-    private String des;
-    private LimitConfig limitConfig;
-    private CacheConfig cacheConfig;
-
-    /**
-     * 扩展字段，可以存为一个大的 json 字段，用来为自定义的 handler 提供配置功能
-     */
-    private String extension;
+public class CacheConfig implements Serializable {
+    private boolean cache = false;
 }
