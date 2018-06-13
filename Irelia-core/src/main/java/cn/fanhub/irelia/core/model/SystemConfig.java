@@ -15,9 +15,6 @@
  */
 package cn.fanhub.irelia.core.model;
 
-import cn.fanhub.irelia.core.upstream.UpstreamConfig;
-import com.alibaba.fastjson.JSONArray;
-import io.netty.handler.codec.http.HttpHeaders;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -25,22 +22,9 @@ import java.io.Serializable;
 /**
  *
  * @author chengfan
- * @version $Id: IreliaRequest.java, v 0.1 2018年04月21日 下午4:25 chengfan Exp $
+ * @version $Id: SystemConfig.java, v 0.1 2018年06月13日 下午11:19 chengfan Exp $
  */
 @Data
-public class IreliaRequest implements Serializable {
-
-    private String appName;
-
-    private UpstreamConfig upstreamConfig;
-
-    private RpcConfig rpcConfig;
-
-    private SystemConfig systemConfig;
-
-    private String rpcValue;
-
-    private JSONArray requestArgs;
-
-    private HttpHeaders headers;
+public class SystemConfig implements Serializable {
+    private String publicKey;
 }

@@ -35,6 +35,7 @@ public class RpcConfig implements Serializable {
     private String rpcName;
     private String des;
     private boolean open = false;
+    private boolean needSign = false;
     private LimitConfig limitConfig;
     private CacheConfig cacheConfig;
 

@@ -24,4 +24,5 @@ package cn.fanhub.irelia.server.http;
 public enum  HeaderKey {
     rpcValue,
     version,
+    sign,
 }

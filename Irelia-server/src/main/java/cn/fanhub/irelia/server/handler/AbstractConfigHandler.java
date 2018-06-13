@@ -18,6 +18,7 @@ package cn.fanhub.irelia.server.handler;
 import cn.fanhub.irelia.core.handler.AbstractPreHandler;
 import cn.fanhub.irelia.core.model.IreliaRequest;
 import cn.fanhub.irelia.core.model.RpcConfig;
+import cn.fanhub.irelia.core.model.SystemConfig;
 import cn.fanhub.irelia.core.upstream.UpstreamConfig;
 import cn.fanhub.irelia.server.http.HeaderKey;
 import com.alibaba.fastjson.JSON;
@@ -49,11 +50,13 @@ public abstract class AbstractConfigHandler extends AbstractPreHandler {
 
         IreliaRequest ireliaRequest = new IreliaRequest();
         ireliaRequest.setRpcValue(rpcValue);
+        ireliaRequest.setHeaders(headers);
 
         // todo 参数支持的不够完善
         ireliaRequest.setRequestArgs(JSON.parseArray(body));
         ireliaRequest.setRpcConfig(config);
 
+        ireliaRequest.setSystemConfig(getSystemConfig(config.getAppName()));
 
         ireliaRequest.setUpstreamConfig(getUpstreamConfig(config.getAppName()));
 
@@ -79,4 +82,6 @@ public abstract class AbstractConfigHandler extends AbstractPreHandler {
     abstract public RpcConfig getRpcConfig(String rpcValue);
 
     abstract public UpstreamConfig getUpstreamConfig(String rpcValue);
+
+    abstract public SystemConfig getSystemConfig(String sysName);
 }
