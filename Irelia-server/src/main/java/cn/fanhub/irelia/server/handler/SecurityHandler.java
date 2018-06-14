@@ -61,7 +61,7 @@ public class SecurityHandler extends AbstractPreHandler {
             //    return;
             //}
         }
-        ctx.fireChannelRead(msg);
+        ctx.fireChannelRead(ireliaRequest);
     }
 
     public int order() {

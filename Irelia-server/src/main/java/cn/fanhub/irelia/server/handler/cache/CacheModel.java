@@ -15,25 +15,16 @@
  */
 package cn.fanhub.irelia.server.handler.cache;
 
-import cn.fanhub.irelia.core.model.IreliaRequest;
 import cn.fanhub.irelia.core.model.IreliaResponse;
-import org.springframework.util.Assert;
+import lombok.Data;
 
 /**
  *
  * @author chengfan
- * @version $Id: CacheHelper.java, v 0.1 2018年06月11日 下午5:26 chengfan Exp $
+ * @version $Id: CacheModel.java, v 0.1 2018年06月14日 下午5:42 chengfan Exp $
  */
-public class CacheHelper {
-
-    private static AbstractCacheHandler CACHE_HANDLER;
-
-    public static void register(AbstractCacheHandler cacheHandler) {
-        CACHE_HANDLER = cacheHandler;
-    }
-
-    public static void setValue(IreliaRequest request, IreliaResponse response) {
-        Assert.notNull(CACHE_HANDLER, "NO CACHE_HANDLER ");
-        CACHE_HANDLER.put(request, response);
-    }
+@Data
+public class CacheModel {
+    private long startTimestamp;
+    private IreliaResponse response;
 }

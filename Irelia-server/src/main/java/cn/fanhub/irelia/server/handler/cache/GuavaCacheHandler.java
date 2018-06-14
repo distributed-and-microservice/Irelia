@@ -15,13 +15,15 @@
  */
 package cn.fanhub.irelia.server.handler.cache;
 
-import cn.fanhub.irelia.core.model.CacheConfig;
 import cn.fanhub.irelia.core.model.IreliaRequest;
 import cn.fanhub.irelia.core.model.IreliaResponse;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.Maps;
 import io.netty.channel.ChannelHandler.Sharable;
+
+import java.util.Map;
 
 /**
  *
@@ -31,29 +33,34 @@ import io.netty.channel.ChannelHandler.Sharable;
 @Sharable
 public class GuavaCacheHandler extends AbstractCacheHandler {
 
-    LoadingCache<String, IreliaResponse> ireliaResponseLoadingCache = CacheBuilder.newBuilder()
-    .maximumSize(1000)
-    .build(new CacheLoader<String, IreliaResponse>() {
-        @Override
-        public IreliaResponse load(String rpcValue) {
-            return null;
-        }
-    });
-
+    private static Map<String, LoadingCache> cacheMap = Maps.newConcurrentMap();
 
     @Override
-    public boolean shouldCache(CacheConfig cacheConfig) {
-        return cacheConfig.isCache();
+    public boolean hasCache(IreliaRequest request) {
+        return request.getRpcConfig().getCacheConfig().isCache();
     }
 
     @Override
     public IreliaResponse cacheValue(IreliaRequest request) {
-        return ireliaResponseLoadingCache.getIfPresent(request.getRpcValue());
+        LoadingCache loadingCache = cacheMap.get(request.getRpcValue());
+        if (loadingCache == null) {
+            return null;
+        }
+        return (IreliaResponse) loadingCache.getIfPresent(request.getRpcValue());
     }
 
     @Override
-    public void put(String rpcValue, IreliaResponse response) {
-        ireliaResponseLoadingCache.put(rpcValue, response);
+    public void put(IreliaRequest request, final IreliaResponse response) {
+        // 有性能问题
+        LoadingCache<String, IreliaResponse> ireliaResponseLoadingCache = CacheBuilder.newBuilder()
+                .maximumSize(request.getRpcConfig().getCacheConfig().getCacheTime())
+                .build(new CacheLoader<String, IreliaResponse>() {
+                    @Override
+                    public IreliaResponse load(String rpcValue) {
+                        return response;
+                    }
+                });
+        cacheMap.put(request.getRpcValue(), ireliaResponseLoadingCache);
     }
 
     @Override

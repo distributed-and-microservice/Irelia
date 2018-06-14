@@ -42,7 +42,7 @@ public class RouteHandler extends AbstractRouterHandler {
         IreliaResponse ireliaResponse = UpstreamManager.getUpstream(ireliaRequest.getUpstreamConfig().getName()).invoke(ireliaRequest);
 
         if (((IreliaRequest) msg).getRpcConfig().getCacheConfig().isCache()) {
-            CacheHelper.setValue(ireliaRequest.getRpcValue(), ireliaResponse);
+            CacheHelper.setValue(ireliaRequest, ireliaResponse);
             if (log.isInfoEnabled()) {
                 log.info("{} response cached", ireliaRequest.getRpcValue());
             }

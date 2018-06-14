@@ -17,7 +17,6 @@ package cn.fanhub.irelia.server.handler.cache;
 
 import cn.fanhub.irelia.common.utils.ResponseUtil;
 import cn.fanhub.irelia.core.handler.AbstractPreHandler;
-import cn.fanhub.irelia.core.model.CacheConfig;
 import cn.fanhub.irelia.core.model.IreliaRequest;
 import cn.fanhub.irelia.core.model.IreliaResponse;
 import io.netty.channel.ChannelHandlerContext;
@@ -38,23 +37,25 @@ public abstract class AbstractCacheHandler extends AbstractPreHandler implements
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        IreliaRequest ireliaRequest = (IreliaRequest) ctx;
-        if (!shouldCache(ireliaRequest.getRpcConfig().getCacheConfig())) {
+        IreliaRequest ireliaRequest = (IreliaRequest) msg;
+        if (!hasCache(ireliaRequest)) {
             ctx.fireChannelRead(msg);
+            return;
         }
         IreliaResponse response = cacheValue(ireliaRequest);
         if (response == null) {
             ctx.fireChannelRead(msg);
+        } else {
+            // 直接响应
+            ResponseUtil.send(ctx, response, HttpResponseStatus.OK);
         }
-        // 直接响应
-        ResponseUtil.send(ctx, response, HttpResponseStatus.OK);
     }
 
 
-    abstract public boolean shouldCache(CacheConfig cacheConfig);
+    abstract public boolean hasCache(IreliaRequest request);
 
     abstract public IreliaResponse cacheValue(IreliaRequest request);
 
-    abstract public void put(String rpcValue, IreliaResponse response);
+    abstract public void put(IreliaRequest request, IreliaResponse response);
 
 }
