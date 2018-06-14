@@ -16,6 +16,7 @@
 package cn.fanhub.irelia.server.handler;
 
 import cn.fanhub.irelia.core.handler.AbstractPreHandler;
+import cn.fanhub.irelia.core.model.Headers;
 import cn.fanhub.irelia.core.model.IreliaRequest;
 import cn.fanhub.irelia.core.model.RpcConfig;
 import cn.fanhub.irelia.core.model.SystemConfig;
@@ -50,7 +51,10 @@ public abstract class AbstractConfigHandler extends AbstractPreHandler {
 
         IreliaRequest ireliaRequest = new IreliaRequest();
         ireliaRequest.setRpcValue(rpcValue);
-        //ireliaRequest.setHeaders(headers);
+
+        Headers header = new Headers();
+        header.putAll(headers);
+        ireliaRequest.setHeaders(header);
 
         // todo 参数支持的不够完善
         ireliaRequest.setRequestArgs(JSON.parseArray(body));

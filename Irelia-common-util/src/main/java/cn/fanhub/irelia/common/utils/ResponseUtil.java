@@ -15,7 +15,9 @@
  */
 package cn.fanhub.irelia.common.utils;
 
+import cn.fanhub.irelia.core.exception.IreliaRuntimeException;
 import cn.fanhub.irelia.core.model.IreliaResponse;
+import cn.fanhub.irelia.core.model.IreliaResponseCode;
 import com.alibaba.fastjson.JSON;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
@@ -47,5 +49,15 @@ public class ResponseUtil {
         );
         response.headers().set(HttpHeaderNames.CONTENT_TYPE, "application/json; charset=UTF-8");
         ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+    }
+
+    public static void buildExceptionResponse(Throwable cause, IreliaResponse response) {
+        if (cause instanceof IreliaRuntimeException) {
+            response.setCode(((IreliaRuntimeException) cause).getResponseCode().getCode());
+            response.setMessage(((IreliaRuntimeException) cause).getResponseCode().getMessage());
+        } else {
+            response.setCode(IreliaResponseCode.SERVER_ERR.getCode());
+            response.setMessage(IreliaResponseCode.SERVER_ERR.getMessage());
+        }
     }
 }

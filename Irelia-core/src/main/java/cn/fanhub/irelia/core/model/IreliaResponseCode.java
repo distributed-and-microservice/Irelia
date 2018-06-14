@@ -22,12 +22,14 @@ package cn.fanhub.irelia.core.model;
  */
 public enum IreliaResponseCode {
 
+    NO_SIGN_KEY_OR_VALUE(3006, "没有上传公钥或者没有传递签名信息"),
     SIGN_ERROR(3005, "签名验证失败"),
     RPC_BEEN_LIMITED(3004, "RPC 被限流"),
     NOT_OPEN_RPC(3003, "没有开启的 RPC"),
     INVALID_QUERY_URL(3002, "非法的请求路径"),
     NOT_SUPPORT_REQUEST(3001, "不支持的请求类型"),
     SERVER_ERR(2001, "服务端错误"),
+    BAD_REQUEST(2002, "请求失败"),
     CUSTOMER_ERR(2000, "业务方错误"),
     SUCCESS(1000, "响应成功");
 

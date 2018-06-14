@@ -39,14 +39,14 @@ public class SimpleCacheHandler extends AbstractCacheHandler {
         if (!cacheConfig.isCache()) {
             return false;
         }
-        CacheModel cacheModel = modelMap.get(request.getRpcValue());
+        CacheModel cacheModel = modelMap.get(getKey(request));
         if (cacheModel == null) {
             return false;
         }
         long time = System.currentTimeMillis() - cacheModel.getStartTimestamp();
 
         if (time > cacheConfig.getCacheTime()) {
-            modelMap.remove(request.getRpcValue());
+            modelMap.remove(getKey(request));
             return false;
         }
 
@@ -55,7 +55,7 @@ public class SimpleCacheHandler extends AbstractCacheHandler {
 
     @Override
     public IreliaResponse cacheValue(IreliaRequest request) {
-        CacheModel cacheModel = modelMap.get(request.getRpcValue());
+        CacheModel cacheModel = modelMap.get(getKey(request));
         if (cacheModel == null) {
             return null;
         }
@@ -67,11 +67,15 @@ public class SimpleCacheHandler extends AbstractCacheHandler {
         CacheModel cacheModel = new CacheModel();
         cacheModel.setResponse(response);
         cacheModel.setStartTimestamp(System.currentTimeMillis());
-        modelMap.put(request.getRpcValue(), cacheModel);
+        modelMap.put(getKey(request), cacheModel);
     }
 
     @Override
     public int order() {
         return 800;
+    }
+
+    private String getKey(IreliaRequest request) {
+        return request.getRpcValue() + request.getRequestArgs();
     }
 }

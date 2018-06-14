@@ -16,10 +16,13 @@
 package cn.fanhub.irelia.server.handler;
 
 import cn.fanhub.irelia.common.utils.ResponseUtil;
+import cn.fanhub.irelia.core.exception.IreliaRuntimeException;
 import cn.fanhub.irelia.core.handler.AbstractRouterHandler;
 import cn.fanhub.irelia.core.model.IreliaRequest;
 import cn.fanhub.irelia.core.model.IreliaResponse;
+import cn.fanhub.irelia.core.model.IreliaResponseCode;
 import cn.fanhub.irelia.server.handler.cache.CacheHelper;
+import cn.fanhub.irelia.upstream.IreliaUpstream;
 import cn.fanhub.irelia.upstream.UpstreamManager;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
@@ -38,8 +41,14 @@ public class RouteHandler extends AbstractRouterHandler {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         IreliaRequest ireliaRequest = (IreliaRequest)msg;
+        IreliaUpstream upstream = UpstreamManager.getUpstream(ireliaRequest.getUpstreamConfig().getName());
 
-        IreliaResponse ireliaResponse = UpstreamManager.getUpstream(ireliaRequest.getUpstreamConfig().getName()).invoke(ireliaRequest);
+        IreliaResponse ireliaResponse;
+        try {
+            ireliaResponse = upstream.invoke(ireliaRequest);
+        } catch (Exception e) {
+            throw new IreliaRuntimeException(IreliaResponseCode.BAD_REQUEST, "请求失败，请检查业务系统是否正常运行");
+        }
 
         if (((IreliaRequest) msg).getRpcConfig().getCacheConfig().isCache()) {
             CacheHelper.setValue(ireliaRequest, ireliaResponse);
@@ -47,13 +56,12 @@ public class RouteHandler extends AbstractRouterHandler {
                 log.info("{} response cached", ireliaRequest.getRpcValue());
             }
         }
-
+        ireliaResponse.setCode(IreliaResponseCode.SUCCESS.getCode());
+        ireliaResponse.setMessage(IreliaResponseCode.SUCCESS.getMessage());
         ResponseUtil.send(ctx, ireliaResponse, HttpResponseStatus.OK);
 
 
     }
-
-
 
     public int order() {
         return 1000;

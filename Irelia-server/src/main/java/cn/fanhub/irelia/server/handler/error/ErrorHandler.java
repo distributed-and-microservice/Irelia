@@ -16,11 +16,9 @@
 package cn.fanhub.irelia.server.handler.error;
 
 import cn.fanhub.irelia.common.utils.ResponseUtil;
-import cn.fanhub.irelia.core.exception.IreliaRuntimeException;
-import cn.fanhub.irelia.server.future.ErrorChannelFutureListener;
 import cn.fanhub.irelia.core.handler.AbstractErrorHandler;
 import cn.fanhub.irelia.core.model.IreliaResponse;
-import cn.fanhub.irelia.core.model.IreliaResponseCode;
+import cn.fanhub.irelia.server.future.ErrorChannelFutureListener;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
@@ -74,14 +72,10 @@ public class ErrorHandler extends AbstractErrorHandler {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        log.error(cause.getMessage(), cause);
         IreliaResponse response = new IreliaResponse();
-        if (cause instanceof IreliaRuntimeException) {
-            response.setCode(((IreliaRuntimeException) cause).getResponseCode().getCode());
-            response.setMessage(((IreliaRuntimeException) cause).getResponseCode().getMessage());
-        } else {
-            response.setCode(IreliaResponseCode.SERVER_ERR.getCode());
-        }
-        response.setContent(cause.getMessage());
+        ResponseUtil.buildExceptionResponse(cause, response);
+        response.setContent("错误详情请查看日志");
         ResponseUtil.send(ctx, response, HttpResponseStatus.BAD_GATEWAY);
     }
 

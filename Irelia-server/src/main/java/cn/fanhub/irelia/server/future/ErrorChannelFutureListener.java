@@ -18,7 +18,6 @@ package cn.fanhub.irelia.server.future;
 import cn.fanhub.irelia.common.utils.ResponseUtil;
 import cn.fanhub.irelia.core.exception.IreliaRuntimeException;
 import cn.fanhub.irelia.core.model.IreliaResponse;
-import cn.fanhub.irelia.core.model.IreliaResponseCode;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -39,14 +38,10 @@ public class ErrorChannelFutureListener implements ChannelFutureListener {
                 log.error("post error" , cause);
                 future.channel().close();
             }
+            log.error("error: " , cause);
             IreliaResponse response = new IreliaResponse();
-            if (cause instanceof IreliaRuntimeException) {
-                response.setCode(((IreliaRuntimeException) cause).getResponseCode().getCode());
-                response.setMessage(((IreliaRuntimeException) cause).getResponseCode().getMessage());
-            } else {
-                response.setCode(IreliaResponseCode.SERVER_ERR.getCode());
-            }
-            response.setContent(cause.getMessage());
+            ResponseUtil.buildExceptionResponse(cause, response);
+            response.setContent("错误详情请查看日志");
             // todo 有瑕疵啊
             ResponseUtil.send(future.channel().pipeline().lastContext(), response, HttpResponseStatus.BAD_GATEWAY);
         }

@@ -16,15 +16,18 @@
 package cn.fanhub.irelia.server.handler;
 
 import cn.fanhub.irelia.common.utils.ResponseUtil;
+import cn.fanhub.irelia.common.utils.SignUtil;
 import cn.fanhub.irelia.core.handler.AbstractPreHandler;
 import cn.fanhub.irelia.core.model.IreliaRequest;
 import cn.fanhub.irelia.core.model.IreliaResponse;
 import cn.fanhub.irelia.core.model.IreliaResponseCode;
 import cn.fanhub.irelia.core.model.RpcConfig;
+import cn.fanhub.irelia.server.http.HeaderKey;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import lombok.extern.slf4j.Slf4j;
+import sun.security.rsa.RSAPublicKeyImpl;
 
 /**
  *
@@ -49,17 +52,24 @@ public class SecurityHandler extends AbstractPreHandler {
 
         if (rpcConfig.isNeedSign()) {
             // 签名校验
-            //String transSign = ireliaRequest.getHeaders().get(HeaderKey.sign.name());
-            //String publicKey = ireliaRequest.getSystemConfig().getPublicKey();
-            //String body = ireliaRequest.getRequestArgs().toJSONString();
-            //boolean verifySign = SignUtil.verifySign(new RSAPublicKeyImpl(publicKey.getBytes()), body, transSign.getBytes());
-            //if (!verifySign) {
-            //    IreliaResponse response = new IreliaResponse();
-            //    response.setCode(IreliaResponseCode.SIGN_ERROR.getCode());
-            //    response.setMessage(IreliaResponseCode.SIGN_ERROR.getMessage());
-            //    ResponseUtil.send(ctx, response, HttpResponseStatus.BAD_REQUEST);
-            //    return;
-            //}
+            String transSign = ireliaRequest.getHeaders().get(HeaderKey.sign.name());
+            String publicKey = ireliaRequest.getSystemConfig().getPublicKey();
+            String body = ireliaRequest.getRequestArgs().toJSONString();
+            if (transSign == null || publicKey == null ) {
+                IreliaResponse response = new IreliaResponse();
+                response.setCode(IreliaResponseCode.NO_SIGN_KEY_OR_VALUE.getCode());
+                response.setMessage(IreliaResponseCode.NO_SIGN_KEY_OR_VALUE.getMessage());
+                ResponseUtil.send(ctx, response, HttpResponseStatus.BAD_REQUEST);
+                return;
+            }
+            boolean verifySign = SignUtil.verifySign(new RSAPublicKeyImpl(publicKey.getBytes()), body, transSign.getBytes());
+            if (!verifySign) {
+                IreliaResponse response = new IreliaResponse();
+                response.setCode(IreliaResponseCode.SIGN_ERROR.getCode());
+                response.setMessage(IreliaResponseCode.SIGN_ERROR.getMessage());
+                ResponseUtil.send(ctx, response, HttpResponseStatus.BAD_REQUEST);
+                return;
+            }
         }
         ctx.fireChannelRead(ireliaRequest);
     }

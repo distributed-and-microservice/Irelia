@@ -41,5 +41,5 @@ public class IreliaRequest implements Serializable {
 
     private JSONArray requestArgs;
 
-    //private HttpHeaders headers;
+    private Headers headers;
 }
