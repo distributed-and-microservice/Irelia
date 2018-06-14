@@ -17,7 +17,6 @@ package cn.fanhub.irelia.core.model;
 
 import cn.fanhub.irelia.core.upstream.UpstreamConfig;
 import com.alibaba.fastjson.JSONArray;
-import io.netty.handler.codec.http.HttpHeaders;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -42,5 +41,5 @@ public class IreliaRequest implements Serializable {
 
     private JSONArray requestArgs;
 
-    private HttpHeaders headers;
+    //private HttpHeaders headers;
 }

@@ -19,6 +19,7 @@ import cn.fanhub.irelia.core.model.IreliaRequest;
 import cn.fanhub.irelia.core.model.LimitConfig;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.RateLimiter;
+import io.netty.channel.ChannelHandler.Sharable;
 
 import java.util.Map;
 
@@ -27,6 +28,7 @@ import java.util.Map;
  * @author chengfan
  * @version $Id: SimpleLimitHandler.java, v 0.1 2018年05月13日 下午1:41 chengfan Exp $
  */
+@Sharable
 public class SimpleLimitHandler extends AbstractLimitHandler {
 
     private static Map<String, RateLimiter> limiterMap = Maps.newConcurrentMap();
@@ -35,6 +37,9 @@ public class SimpleLimitHandler extends AbstractLimitHandler {
     boolean shouldLimit(IreliaRequest ireliaRequest) {
         LimitConfig limitConfig = ireliaRequest.getRpcConfig().getLimitConfig();
         if (limitConfig.isLimit()) {
+            if (limitConfig.getFrequency() <= 0) {
+                return true;
+            }
 
             RateLimiter limiter = limiterMap.get(ireliaRequest.getRpcValue());
             if (limiter == null) {

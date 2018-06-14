@@ -21,12 +21,14 @@ import cn.fanhub.irelia.core.model.IreliaResponse;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import io.netty.channel.ChannelHandler.Sharable;
 
 /**
  *
  * @author chengfan
  * @version $Id: GuavaCacheHandler.java, v 0.1 2018年06月11日 下午3:34 chengfan Exp $
  */
+@Sharable
 public class GuavaCacheHandler extends AbstractCacheHandler {
 
     LoadingCache<String, IreliaResponse> ireliaResponseLoadingCache = CacheBuilder.newBuilder()

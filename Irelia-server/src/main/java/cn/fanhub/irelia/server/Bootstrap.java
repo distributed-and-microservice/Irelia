@@ -15,6 +15,7 @@
  */
 package cn.fanhub.irelia.server;
 
+import cn.fanhub.irelia.upstream.UpstreamManager;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
@@ -48,12 +49,13 @@ public class Bootstrap implements ApplicationContextAware {
      */
     public void start() throws InterruptedException {
         log.info("start netty server");
-        Thread thread = new Thread(new Runnable() {
+        final Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 EventLoopGroup boosGroup = new NioEventLoopGroup();
                 EventLoopGroup workerGroup = new NioEventLoopGroup();
                 try {
+                    Class.forName(UpstreamManager.class.getName(), true, Thread.currentThread().getContextClassLoader());
                     ServerBootstrap bootstrap = new ServerBootstrap();
                     bootstrap.group(boosGroup, workerGroup)
                             .channel(NioServerSocketChannel.class)
@@ -64,6 +66,8 @@ public class Bootstrap implements ApplicationContextAware {
 
                 } catch (InterruptedException e) {
                     log.error("start netty server error :", e);
+                } catch (ClassNotFoundException e) {
+                    log.error("start UpstreamManager error :", e);
                 } finally {
                     log.info("shutdown netty server");
                     try {

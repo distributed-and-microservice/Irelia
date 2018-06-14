@@ -27,6 +27,6 @@ import java.io.Serializable;
 @Data
 public class LimitConfig implements Serializable {
     private boolean limit = false;
-    private int frequency = 0;
-    private String limitTemplate = "系统忙，请稍后再试";
+    private int frequency;
+    private String limitTemplate;
 }

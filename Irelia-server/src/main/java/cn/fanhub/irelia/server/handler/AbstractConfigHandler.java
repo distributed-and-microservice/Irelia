@@ -50,7 +50,7 @@ public abstract class AbstractConfigHandler extends AbstractPreHandler {
 
         IreliaRequest ireliaRequest = new IreliaRequest();
         ireliaRequest.setRpcValue(rpcValue);
-        ireliaRequest.setHeaders(headers);
+        //ireliaRequest.setHeaders(headers);
 
         // todo 参数支持的不够完善
         ireliaRequest.setRequestArgs(JSON.parseArray(body));

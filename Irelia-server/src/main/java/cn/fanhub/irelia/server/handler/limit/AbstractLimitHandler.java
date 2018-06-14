@@ -37,6 +37,7 @@ public abstract class AbstractLimitHandler extends AbstractPreHandler {
             IreliaResponse response = new IreliaResponse();
             response.setCode(IreliaResponseCode.RPC_BEEN_LIMITED.getCode());
             response.setMessage(IreliaResponseCode.RPC_BEEN_LIMITED.getMessage());
+            response.setContent(ireliaRequest.getRpcConfig().getLimitConfig().getLimitTemplate());
             ResponseUtil.send(ctx, response, HttpResponseStatus.OK);
         } else {
             ctx.fireChannelRead(msg);
